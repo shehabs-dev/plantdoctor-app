@@ -1,0 +1,54 @@
+{
+  "project_info": {
+    "project_number": "1046574275627",
+    "project_id": "plantdoctor-app",
+    "storage_bucket": "plantdoctor-app.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:1046574275627:android:8db206fcc8df63d58a5e6e",
+        "android_client_info": {
+          "package_name": "com.plantdoctor.app"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "1046574275627-oegce6mgmg3tdd5ob6m6m2u1ndirq6mk.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.plantdoctor.app",
+            "certificate_hash": "d85757d89a044ac49622c53d67846e1feb4db1dc"
+          }
+        },
+        {
+          "client_id": "1046574275627-jk3tg8lnd4lcrhcljkfgugu0a814psoq.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCO6ysCm2Z_-fnGPRu6eUKDOTzeaGqg3LI"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "1046574275627-jk3tg8lnd4lcrhcljkfgugu0a814psoq.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "1046574275627-538pmih89oqja3fame3glqket35og2ct.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.plantdoctor.app"
+              }
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
