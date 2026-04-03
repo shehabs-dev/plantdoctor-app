@@ -1,8 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:email_validator/email_validator.dart';
+import '../../config/localization/generated/l10n.dart';
 
 /// Defines supported field types
-enum FieldType { username, password, phone, email }
+enum FieldType { name, password, phone, email }
 
 /// A clean, reusable text form field with built-in validation.
 /// Designed for both login and sign-up forms.
@@ -75,54 +76,71 @@ class AppTextFormField extends StatefulWidget {
 class _AppTextFormFieldState extends State<AppTextFormField> {
   bool _obscureText = true;
 
-  /// Core validation logic
   String? _validate(String? value) {
     final text = value?.trim() ?? '';
+    final s = S.of(context);
 
     if (widget.isRequired && text.isEmpty) {
-      return '${widget.label} is required';
+      switch (widget.fieldType) {
+        case FieldType.name:
+          return s.usernameRequired;
+        case FieldType.password:
+          return s.passwordRequired;
+        case FieldType.phone:
+          return s.phoneRequired;
+        case FieldType.email:
+          return s.emailRequired;
+      }
     }
 
     if (text.isEmpty) return null;
 
     switch (widget.fieldType) {
-      case FieldType.username:
-        if (text.length < 3) return 'Username must be at least 3 characters';
+      case FieldType.name:
+        if (text.length < 3) return s.usernameMinLength;
         break;
 
       case FieldType.password:
-        // Password complexity check
         if (widget.validateComplexity) {
           final errors = <String>[];
-          if (text.length < 6) errors.add('6+ chars');
-          if (!RegExp(r'[A-Z]').hasMatch(text)) errors.add('uppercase');
-          if (!RegExp(r'[a-z]').hasMatch(text)) errors.add('lowercase');
-          if (!RegExp(r'\d').hasMatch(text)) errors.add('number');
 
-          if (errors.isNotEmpty) return 'Include: ${errors.join(', ')}';
+          if (text.length < 6) {
+            errors.add(s.passwordRequirementChars);
+          }
+          if (!RegExp(r'[A-Z]').hasMatch(text)) {
+            errors.add(s.passwordRequirementUppercase);
+          }
+          if (!RegExp(r'[a-z]').hasMatch(text)) {
+            errors.add(s.passwordRequirementLowercase);
+          }
+          if (!RegExp(r'\d').hasMatch(text)) {
+            errors.add(s.passwordRequirementNumber);
+          }
+
+          if (errors.isNotEmpty) {
+            return s.passwordInclude(errors.join(', '));
+          }
         }
 
-        // Match controller check (password confirmation)
         if (widget.matchController != null &&
             text != widget.matchController!.text.trim()) {
-          return 'Passwords do not match';
+          return s.passwordsDoNotMatch;
         }
         break;
 
       case FieldType.phone:
         if (!RegExp(r'^\+?[0-9]{10,15}$').hasMatch(text)) {
-          return 'Enter a valid phone number';
+          return s.validPhoneNumber;
         }
         break;
 
       case FieldType.email:
         if (!EmailValidator.validate(text)) {
-          return 'Enter a valid email address';
+          return s.validEmailAddress;
         }
         break;
     }
 
-    // Run external validator only if matchController is not provided
     return widget.validator?.call(value);
   }
 
@@ -133,7 +151,7 @@ class _AppTextFormFieldState extends State<AppTextFormField> {
         return TextInputType.emailAddress;
       case FieldType.phone:
         return TextInputType.phone;
-      case FieldType.username:
+      case FieldType.name:
       case FieldType.password:
         return TextInputType.text;
     }
@@ -147,7 +165,7 @@ class _AppTextFormFieldState extends State<AppTextFormField> {
         return widget.validateComplexity
             ? const [AutofillHints.newPassword]
             : const [AutofillHints.password];
-      case FieldType.username:
+      case FieldType.name:
         return const [AutofillHints.username];
       case FieldType.phone:
         return const [AutofillHints.telephoneNumber];

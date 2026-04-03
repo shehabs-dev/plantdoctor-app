@@ -1,7 +1,8 @@
 import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:plantdoctor/core/constants/success_messages.dart';
+import '../../../../config/localization/generated/l10n.dart';
+import '../../../../core/helpers/auth_message_key_x.dart';
 import '../../../../core/theme/app_sizes.dart';
 import '../../../../core/widgets/app_text_form_field.dart';
 import '../cubit/auth/auth_cubit.dart';
@@ -61,14 +62,16 @@ class _ForgotPasswordPageState extends State<ForgotPasswordPage> {
         if (state is AuthError) {
           messenger
             ..clearSnackBars() // prevent multiple snack bar
-            ..showSnackBar(SnackBar(content: Text(state.message)));
+            ..showSnackBar(
+              SnackBar(content: Text(state.messageKey.tr(context))),
+            );
         }
 
         if (state is PasswordResetSent && !_isCountingDown) {
           messenger
             ..clearSnackBars()
             ..showSnackBar(
-              SnackBar(content: Text(SuccessMessages.passwordResetSent)),
+              SnackBar(content: Text(S.of(context).passwordResetSent)),
             );
 
           _startCountdown();
@@ -88,20 +91,20 @@ class _ForgotPasswordPageState extends State<ForgotPasswordPage> {
                   Icon(Icons.lock_reset_rounded, size: AppSizes.avatarXl),
                   SizedBox(height: AppSizes.spaceMd),
                   Text(
-                    'Forgot your password?',
+                    S.of(context).forgotYourPassword,
                     style: Theme.of(context).textTheme.headlineMedium,
                     textAlign: TextAlign.center,
                   ),
                   SizedBox(height: AppSizes.spaceXs),
                   Text(
-                    'Enter your email address and we will send you a link to reset your password.',
+                    S.of(context).forgotPasswordDescription,
                     textAlign: TextAlign.center,
                     style: Theme.of(context).textTheme.bodyMedium,
                   ),
                   SizedBox(height: AppSizes.spaceXl),
                   AppTextFormField(
                     controller: _emailController,
-                    label: 'Email Address',
+                    label: S.of(context).emailAddress,
                     fieldType: FieldType.email,
                   ),
                   SizedBox(height: AppSizes.spaceLg),
@@ -112,8 +115,8 @@ class _ForgotPasswordPageState extends State<ForgotPasswordPage> {
                     child: isLoading
                         ? const CircularProgressIndicator()
                         : _isCountingDown
-                        ? Text('Resend in $_secondsRemaining s')
-                        : const Text('Send Reset Link'),
+                        ? Text(S.of(context).resendInSeconds(_secondsRemaining))
+                        : Text(S.of(context).sendResetLink),
                   ),
                 ],
               ),

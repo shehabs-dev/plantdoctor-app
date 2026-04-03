@@ -1,7 +1,8 @@
 import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:plantdoctor/core/constants/success_messages.dart';
+import '../../../../config/localization/generated/l10n.dart';
+import '../../../../core/helpers/auth_message_key_x.dart';
 import '../../../../core/theme/app_sizes.dart';
 import '../cubit/auth/auth_cubit.dart';
 
@@ -54,12 +55,15 @@ class _VerifyEmailPageState extends State<VerifyEmailPage> {
     return BlocConsumer<AuthCubit, AuthState>(
       listener: (context, state) {
         final messenger = ScaffoldMessenger.of(context);
-        if (state is UnverifiedEmail && state.message != null) {
+        if (state is UnverifiedEmail && state.messageKey?.tr(context) != null) {
           messenger
             ..clearSnackBars()
-            ..showSnackBar(SnackBar(content: Text(state.message!)));
+            ..showSnackBar(
+              SnackBar(content: Text(state.messageKey!.tr(context))),
+            );
 
-          if (state.message == SuccessMessages.emailVerificationSent) {
+          if (state.messageKey?.tr(context) ==
+              S.of(context).emailVerificationSent) {
             _startCountdown();
           }
         }
@@ -81,7 +85,7 @@ class _VerifyEmailPageState extends State<VerifyEmailPage> {
                   Icon(Icons.mark_email_read_rounded, size: AppSizes.avatarXl),
                   SizedBox(height: AppSizes.spaceLg),
                   Text(
-                    'A verification link has been sent to:\n$_userEmail\nPlease verify your account to continue.',
+                    S.of(context).verificationEmailSentTo(_userEmail),
                     textAlign: TextAlign.center,
                     style: Theme.of(context).textTheme.titleMedium,
                   ),
@@ -100,10 +104,10 @@ class _VerifyEmailPageState extends State<VerifyEmailPage> {
                         : const Icon(Icons.refresh),
                     label: Text(
                       isSending
-                          ? 'Sending...'
+                          ? S.of(context).sending
                           : _canResend
-                          ? 'Resend Email'
-                          : 'Wait ${_countdown}s to Resend',
+                          ? S.of(context).resendEmail
+                          : S.of(context).waitToResend(_countdown),
                     ),
                   ),
                   SizedBox(height: AppSizes.spaceLg),
@@ -117,13 +121,13 @@ class _VerifyEmailPageState extends State<VerifyEmailPage> {
                             child: CircularProgressIndicator(strokeWidth: 2),
                           )
                         : const Icon(Icons.check_circle_outline),
-                    label: const Text('I have verified my email'),
+                    label: Text(S.of(context).iVerifiedMyEmail),
                   ),
                   SizedBox(height: AppSizes.spaceXl),
                   TextButton.icon(
                     onPressed: () => context.read<AuthCubit>().signOut(),
                     icon: const Icon(Icons.logout),
-                    label: const Text('Sign Out'),
+                    label: Text(S.of(context).signOut),
                   ),
                 ],
               ),

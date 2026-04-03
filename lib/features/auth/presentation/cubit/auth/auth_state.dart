@@ -40,19 +40,20 @@ class Unauthenticated extends AuthState {}
 
 class UnverifiedEmail extends AuthState {
   final UserEntity user;
-  final String? message;
+  final AuthMessageKey? messageKey;
 
-  const UnverifiedEmail(this.user, {this.message});
+  const UnverifiedEmail(this.user, {this.messageKey});
+
   @override
-  List<Object?> get props => [message, user];
+  List<Object?> get props => [messageKey, user];
 }
 
 class AuthError extends AuthState {
-  final String message;
-  const AuthError(this.message);
+  final AuthMessageKey messageKey;
+  const AuthError(this.messageKey);
 
   @override
-  List<Object?> get props => [message];
+  List<Object?> get props => [messageKey];
 }
 
 class EmailVerificationSent extends AuthState {}

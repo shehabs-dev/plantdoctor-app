@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:plantdoctor/core/theme/app_sizes.dart';
-import 'package:plantdoctor/core/widgets/app_text_form_field.dart';
+import '../../../../config/localization/generated/l10n.dart';
+import '../../../../core/helpers/auth_message_key_x.dart';
+import '../../../../core/theme/app_sizes.dart';
+import '../../../../core/widgets/app_text_form_field.dart';
 import '../../../../core/widgets/custom_app_bar.dart';
 import '../../../../core/widgets/loading_widget.dart';
 import '../cubit/auth/auth_cubit.dart';
@@ -13,7 +15,7 @@ class SignUpPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: buildAppBar(context, title: "Create Account"),
+      appBar: buildAppBar(context, title: S.of(context).createAccount),
 
       body: _SignUpBody(),
     );
@@ -58,12 +60,15 @@ class _SignUpBodyState extends State<_SignUpBody> {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                Text("Join PlantDoctor 🌱", style: textTheme.headlineSmall),
+                Text(
+                  S.of(context).joinPlantDoctor,
+                  style: textTheme.headlineSmall,
+                ),
 
                 SizedBox(height: AppSizes.spaceSm),
 
                 Text(
-                  "Create your account to start detecting plant diseases instantly",
+                  S.of(context).createAccountDescription,
                   style: textTheme.bodyMedium,
                 ),
 
@@ -71,15 +76,15 @@ class _SignUpBodyState extends State<_SignUpBody> {
 
                 // TextFields
                 AppTextFormField(
-                  label: "Full Name",
+                  label: S.of(context).fullName,
                   controller: _fullNameController,
-                  fieldType: FieldType.username,
+                  fieldType: FieldType.name,
                 ),
 
                 SizedBox(height: AppSizes.spaceMd),
 
                 AppTextFormField(
-                  label: "Email",
+                  label: S.of(context).email,
                   controller: _emailController,
                   fieldType: FieldType.email,
                 ),
@@ -87,7 +92,7 @@ class _SignUpBodyState extends State<_SignUpBody> {
                 SizedBox(height: AppSizes.spaceMd),
 
                 AppTextFormField(
-                  label: "Password",
+                  label: S.of(context).password,
                   controller: _passwordController,
                   validateComplexity: true,
                   fieldType: FieldType.password,
@@ -96,7 +101,7 @@ class _SignUpBodyState extends State<_SignUpBody> {
                 SizedBox(height: AppSizes.spaceMd),
 
                 AppTextFormField(
-                  label: "Confirm Password",
+                  label: S.of(context).confirmPassword,
                   matchController: _passwordController,
                   fieldType: FieldType.password,
                 ),
@@ -108,7 +113,9 @@ class _SignUpBodyState extends State<_SignUpBody> {
                     if (state is AuthError) {
                       ScaffoldMessenger.of(context)
                         ..clearSnackBars()
-                        ..showSnackBar(SnackBar(content: Text(state.message)));
+                        ..showSnackBar(
+                          SnackBar(content: Text(state.messageKey.tr(context))),
+                        );
                     }
                   },
                   builder: (context, state) {
@@ -126,7 +133,7 @@ class _SignUpBodyState extends State<_SignUpBody> {
                             },
                       child: state.isLoading(AuthAction.signUp)
                           ? LoadingWidget()
-                          : Text("Sign Up"),
+                          : Text(S.of(context).signUp),
                     );
                   },
                 ),

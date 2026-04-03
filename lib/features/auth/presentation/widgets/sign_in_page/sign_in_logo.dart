@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import '../../../../../config/localization/generated/l10n.dart';
+import '../../../../../core/assets/app_assets.dart';
 import '../../../../../core/theme/app_sizes.dart';
 
 class SignInLogo extends StatelessWidget {
@@ -15,16 +17,16 @@ class SignInLogo extends StatelessWidget {
             width: AppSizes.avatarXxl,
             height: AppSizes.avatarXxl,
             decoration: BoxDecoration(),
-            child: Image.asset('assets/icons/p4_4.png'),
+            child: Image.asset(AppAssets.authLogo),
           ),
 
           SizedBox(height: AppSizes.spaceSm),
 
-          Text("PlantDoctor", style: tt.headlineSmall),
+          Text(S.of(context).appName, style: tt.headlineSmall),
 
           SizedBox(height: AppSizes.spaceXxs),
 
-          Text("AI Plant Disease Detection", style: tt.labelMedium),
+          Text(S.of(context).appTagline, style: tt.labelMedium),
         ],
       ),
     );

@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import '../../../../config/localization/generated/l10n.dart';
 import '../../../../core/theme/app_sizes.dart';
 import '../../../auth/presentation/cubit/auth/auth_cubit.dart';
 
@@ -15,12 +16,12 @@ class HistoryChatPage extends StatelessWidget {
         children: [
           const Icon(Icons.history, size: 80, color: Colors.grey),
           const SizedBox(height: 16),
-          const Text('No chat history yet'),
+          Text(S.of(context).noChatHistoryYet),
           SizedBox(height: AppSizes.spaceMd),
           SizedBox(
             width: 300.w,
             child: ElevatedButton(
-              child: const Text('Sign Out'),
+              child: Text(S.of(context).signOut),
               onPressed: () => showDialogConfirm(context),
             ),
           ),

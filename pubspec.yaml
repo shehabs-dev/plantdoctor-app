@@ -49,6 +49,7 @@ dependencies:
   flutter_native_splash: ^2.4.7
   webview_flutter: ^4.13.1
   shared_preferences: ^2.5.4
+  flutter_localization: ^0.3.3
 
 dev_dependencies:
   flutter_test:
@@ -64,7 +65,6 @@ dev_dependencies:
 
 # For information on the generic Dart part of this file, see the
 # following page: https://dart.dev/tools/pub/pubspec
-
 # The following section is specific to Flutter packages.
 flutter:
   # The following line ensures that the Material Icons font is
@@ -77,13 +77,10 @@ flutter:
     - assets/icons/
     - assets/splash/
   #   - images/a_dot_ham.jpeg
-
   # An image asset can refer to one or more resolution-specific "variants", see
   # https://flutter.dev/to/resolution-aware-images
-
   # For details regarding adding assets from package dependencies, see
   # https://flutter.dev/to/asset-from-package
-
   # To add custom fonts to your application, add a fonts section here,
   # in this "flutter" section. Each entry in this list should have a
   # "family" key with the font family name, and a "fonts" key with a
@@ -103,7 +100,6 @@ flutter:
   #
   # For details regarding fonts from package dependencies,
   # see https://flutter.dev/to/font-from-package
-
   fonts:
     - family: Sora
       fonts:
@@ -125,3 +121,9 @@ flutter:
           weight: 500
         - asset: assets/fonts/dMMono/DMMono-Italic.ttf
           style: italic
+
+flutter_intl:
+  enabled: true
+  arb_dir: lib/config/localization/translation
+  output_dir: lib/config/localization/generated
+

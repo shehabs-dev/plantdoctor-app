@@ -1,0 +1,87 @@
+{
+  "@@locale": "en",
+  "appName": "PlantDoctor",
+  "appTagline": "AI Plant Disease Detection",
+  "welcomeBack": "Welcome Back 👋",
+  "createAccount": "Create Account",
+  "joinPlantDoctor": "Join PlantDoctor 🌱",
+  "signIn": "Sign In",
+  "signUp": "Sign Up",
+  "signOut": "Sign Out",
+  "dontHaveAnAccount": "Don't have an account?",
+  "email": "Email",
+  "emailAddress": "Email Address",
+  "password": "Password",
+  "confirmPassword": "Confirm Password",
+  "fullName": "Full Name",
+  "forgotPassword": "Forgot Password?",
+  "forgotYourPassword": "Forgot your password?",
+  "forgotPasswordDescription": "Enter your email address and we will send you a link to reset your password.",
+  "sendResetLink": "Send Reset Link",
+  "resendInSeconds": "Resend in {seconds} s",
+  "@resendInSeconds": {
+    "placeholders": {
+      "seconds": {}
+    }
+  },
+  "createAccountDescription": "Create your account to start detecting plant diseases instantly",
+  "or": "or",
+  "verificationEmailSentTo": "A verification link has been sent to:\n{email}\nPlease verify your account to continue.",
+  "@verificationEmailSentTo": {
+    "placeholders": {
+      "email": {}
+    }
+  },
+  "sending": "Sending...",
+  "resendEmail": "Resend Email",
+  "waitToResend": "Wait {seconds}s to Resend",
+  "@waitToResend": {
+    "placeholders": {
+      "seconds": {}
+    }
+  },
+  "iVerifiedMyEmail": "I Verified My Email",
+  "signInWithGoogle": "Sign in with Google",
+  "signInWithApple": "Sign in with Apple",
+  "signInWithFacebook": "Sign in with Facebook",
+  "signInWithGitHub": "Sign in with GitHub",
+  "signInWithX": "Sign in with X",
+  "signInWithLinkedIn": "Sign in with LinkedIn",
+  "signInWithMicrosoft": "Sign in with Microsoft",
+  "serverError": "We're having trouble connecting to the server. Please try again.",
+  "offlineError": "You're offline. Please check your internet connection.",
+  "unexpectedError": "Something went wrong. Please try again.",
+  "emailAlreadyInUse": "An account with this email already exists.",
+  "invalidCredential": "Invalid email or password.",
+  "notAuthenticated": "No account found with this email. Please sign up first.",
+  "signInAborted": "Sign in was cancelled.",
+  "emailNotVerified": "Your email has not been verified yet.",
+  "tooManyRequests": "Too many attempts. Please try again later.",
+  "emailVerificationSent": "A verification email has been sent. Please check your inbox.",
+  "passwordResetSent": "A password reset email has been sent. Please check your inbox to reset your password.",
+  "postAddedSuccessfully": "Post added successfully",
+  "postDeletedSuccessfully": "Post deleted successfully",
+  "postUpdatedSuccessfully": "Post updated successfully",
+  "usernameRequired": "Username is required",
+  "passwordRequired": "Password is required",
+  "emailRequired": "Email is required",
+  "phoneRequired": "Phone number is required",
+  "usernameMinLength": "Username must be at least 3 characters",
+  "passwordInclude": "Include: {requirements}",
+  "@passwordInclude": {
+    "placeholders": {
+      "requirements": {}
+    }
+  },
+  "passwordsDoNotMatch": "Passwords do not match",
+  "validPhoneNumber": "Enter a valid phone number",
+  "validEmailAddress": "Enter a valid email address",
+  "passwordRequirementChars": "6+ chars",
+  "passwordRequirementUppercase": "uppercase",
+  "passwordRequirementLowercase": "lowercase",
+  "passwordRequirementNumber": "number",
+  "assistant": "Assistant",
+  "report": "Report",
+  "ministry": "Ministry",
+  "noChatHistoryYet": "No chat history yet"
+}

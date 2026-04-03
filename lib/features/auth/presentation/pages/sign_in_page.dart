@@ -1,9 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
+import '../../../../config/localization/generated/l10n.dart';
 import '../../../../config/routes/route_names.dart';
 import '../../../../core/assets/app_assets.dart';
-import '../../../../core/constants/social_auth_labels.dart';
+import '../../../../core/helpers/auth_message_key_x.dart';
 import '../../../../core/theme/app_sizes.dart';
 import '../../../../core/widgets/app_text_form_field.dart';
 import '../../../../core/widgets/loading_widget.dart';
@@ -52,7 +53,9 @@ class _BuildBodyState extends State<_BuildBody> {
             if (state is AuthError) {
               ScaffoldMessenger.of(context)
                 ..clearSnackBars()
-                ..showSnackBar(SnackBar(content: Text(state.message)));
+                ..showSnackBar(
+                  SnackBar(content: Text(state.messageKey.tr(context))),
+                );
             }
           },
           builder: (context, state) {
@@ -71,7 +74,7 @@ class _BuildBodyState extends State<_BuildBody> {
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                         Text(
-                          "Welcome Back 👋",
+                          S.of(context).welcomeBack,
                           style: Theme.of(context).textTheme.headlineSmall,
                         ),
 
@@ -79,7 +82,7 @@ class _BuildBodyState extends State<_BuildBody> {
 
                         // TextFields
                         AppTextFormField(
-                          label: "Email",
+                          label: S.of(context).email,
                           fieldType: FieldType.email,
                           controller: _emailController,
                           isRequired: true,
@@ -88,7 +91,7 @@ class _BuildBodyState extends State<_BuildBody> {
                         SizedBox(height: AppSizes.spaceMd),
 
                         AppTextFormField(
-                          label: "Password",
+                          label: S.of(context).password,
                           fieldType: FieldType.password,
                           controller: _passwordController,
                           isRequired: true,
@@ -101,7 +104,7 @@ class _BuildBodyState extends State<_BuildBody> {
                           child: TextButton(
                             onPressed: () =>
                                 context.pushNamed(RoutesName.forgotPassword),
-                            child: Text("Forgot Password?"),
+                            child: Text(S.of(context).forgotPassword),
                           ),
                         ),
 
@@ -121,7 +124,7 @@ class _BuildBodyState extends State<_BuildBody> {
                                 },
                           child: state.isLoading(AuthAction.signIn)
                               ? LoadingWidget()
-                              : Text("Sign In"),
+                              : Text(S.of(context).signIn),
                         ),
 
                         SizedBox(height: AppSizes.spaceMd),
@@ -129,7 +132,7 @@ class _BuildBodyState extends State<_BuildBody> {
                         SizedBox(height: AppSizes.spaceXs),
 
                         SocialLoginButton(
-                          text: SocialAuthLabels.google,
+                          text: S.of(context).signInWithGoogle,
                           icon: Image.asset(AppAssets.googleIcon),
                           onPressed: state.isLoading(AuthAction.googleSignIn)
                               ? null
@@ -145,12 +148,12 @@ class _BuildBodyState extends State<_BuildBody> {
                         Row(
                           mainAxisAlignment: MainAxisAlignment.center,
                           children: [
-                            Text("Don't have an account?"),
+                            Text(S.of(context).dontHaveAnAccount),
 
                             TextButton(
                               onPressed: () =>
                                   context.pushNamed(RoutesName.signUp),
-                              child: Text("Sign Up"),
+                              child: Text(S.of(context).signUp),
                             ),
                           ],
                         ),

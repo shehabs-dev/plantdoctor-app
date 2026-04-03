@@ -1,0 +1,87 @@
+{
+  "@@locale": "ar",
+  "appName": "PlantDoctor",
+  "appTagline": "اكتشاف أمراض النباتات بالذكاء الاصطناعي",
+  "welcomeBack": "مرحبًا بعودتك 👋",
+  "createAccount": "إنشاء حساب",
+  "joinPlantDoctor": "انضم إلى PlantDoctor 🌱",
+  "signIn": "تسجيل الدخول",
+  "signUp": "إنشاء حساب",
+  "signOut": "تسجيل الخروج",
+  "dontHaveAnAccount": "ليس لديك حساب؟",
+  "email": "البريد الإلكتروني",
+  "emailAddress": "عنوان البريد الإلكتروني",
+  "password": "كلمة المرور",
+  "confirmPassword": "تأكيد كلمة المرور",
+  "fullName": "الاسم الكامل",
+  "forgotPassword": "هل نسيت كلمة المرور؟",
+  "forgotYourPassword": "هل نسيت كلمة المرور؟",
+  "forgotPasswordDescription": "أدخل بريدك الإلكتروني وسنرسل لك رابطًا لإعادة تعيين كلمة المرور.",
+  "sendResetLink": "إرسال رابط إعادة التعيين",
+  "resendInSeconds": "إعادة الإرسال خلال {seconds} ثانية",
+  "@resendInSeconds": {
+    "placeholders": {
+      "seconds": {}
+    }
+  },
+  "createAccountDescription": "أنشئ حسابك لبدء اكتشاف أمراض النباتات فورًا",
+  "or": "أو",
+  "verificationEmailSentTo": "تم إرسال رابط التحقق إلى:\n{email}\nيرجى التحقق من حسابك للمتابعة.",
+  "@verificationEmailSentTo": {
+    "placeholders": {
+      "email": {}
+    }
+  },
+  "sending": "جارٍ الإرسال...",
+  "resendEmail": "إعادة إرسال البريد",
+  "waitToResend": "انتظر {seconds} ثانية لإعادة الإرسال",
+  "@waitToResend": {
+    "placeholders": {
+      "seconds": {}
+    }
+  },
+  "iVerifiedMyEmail": "لقد قمت بتأكيد بريدي الإلكتروني",
+  "signInWithGoogle": "تسجيل الدخول باستخدام Google",
+  "signInWithApple": "تسجيل الدخول باستخدام Apple",
+  "signInWithFacebook": "تسجيل الدخول باستخدام Facebook",
+  "signInWithGitHub": "تسجيل الدخول باستخدام GitHub",
+  "signInWithX": "تسجيل الدخول باستخدام X",
+  "signInWithLinkedIn": "تسجيل الدخول باستخدام LinkedIn",
+  "signInWithMicrosoft": "تسجيل الدخول باستخدام Microsoft",
+  "serverError": "نواجه مشكلة في الاتصال بالخادم. يرجى المحاولة مرة أخرى.",
+  "offlineError": "أنت غير متصل بالإنترنت. يرجى التحقق من اتصالك.",
+  "unexpectedError": "حدث خطأ ما. يرجى المحاولة مرة أخرى.",
+  "emailAlreadyInUse": "يوجد حساب بهذا البريد الإلكتروني بالفعل.",
+  "invalidCredential": "البريد الإلكتروني أو كلمة المرور غير صحيحة.",
+  "notAuthenticated": "لم يتم العثور على حساب بهذا البريد الإلكتروني. يرجى إنشاء حساب أولاً.",
+  "signInAborted": "تم إلغاء تسجيل الدخول.",
+  "emailNotVerified": "لم يتم التحقق من بريدك الإلكتروني بعد.",
+  "tooManyRequests": "عدد المحاولات كبير جدًا. يرجى المحاولة لاحقًا.",
+  "emailVerificationSent": "تم إرسال رسالة تحقق إلى بريدك الإلكتروني. يرجى التحقق من صندوق الوارد.",
+  "passwordResetSent": "تم إرسال رسالة إعادة تعيين كلمة المرور إلى بريدك الإلكتروني. يرجى التحقق من صندوق الوارد لإعادة التعيين.",
+  "usernameRequired": "اسم المستخدم مطلوب",
+  "passwordRequired": "كلمة المرور مطلوبة",
+  "emailRequired": "البريد الإلكتروني مطلوب",
+  "phoneRequired": "رقم الهاتف مطلوب",
+  "usernameMinLength": "يجب أن يكون اسم المستخدم 3 أحرف على الأقل",
+  "passwordInclude": "يجب أن تحتوي على: {requirements}",
+  "@passwordInclude": {
+    "placeholders": {
+      "requirements": {}
+    }
+  },
+  "passwordsDoNotMatch": "كلمتا المرور غير متطابقتين",
+  "validPhoneNumber": "أدخل رقم هاتف صحيح",
+  "validEmailAddress": "أدخل بريدًا إلكترونيًا صحيحًا",
+  "passwordRequirementChars": "6 أحرف أو أكثر",
+  "passwordRequirementUppercase": "حرف كبير",
+  "passwordRequirementLowercase": "حرف صغير",
+  "passwordRequirementNumber": "رقم",
+  "postAddedSuccessfully": "تمت إضافة المنشور بنجاح",
+  "postDeletedSuccessfully": "تم حذف المنشور بنجاح",
+  "postUpdatedSuccessfully": "تم تحديث المنشور بنجاح",
+  "assistant": "المساعد",
+  "report": "التقرير",
+  "ministry": "الوزارة",
+  "noChatHistoryYet": "لا يوجد سجل محادثات بعد"
+}

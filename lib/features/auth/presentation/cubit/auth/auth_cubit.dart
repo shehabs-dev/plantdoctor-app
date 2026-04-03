@@ -1,8 +1,6 @@
 import 'dart:async';
 import 'package:equatable/equatable.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import '../../../../../core/constants/error_messages.dart';
-import '../../../../../core/constants/success_messages.dart';
 import '../../../../../core/errors/failures.dart';
 import '../../../domain/entities/auth_provider.dart';
 import '../../../domain/entities/user_entity.dart';
@@ -16,6 +14,7 @@ import '../../../domain/usecases/sign_in_usecase.dart';
 import '../../../domain/usecases/sign_in_with_provider_usecase.dart';
 import '../../../domain/usecases/sign_out_usecase.dart';
 import '../../../domain/usecases/sign_up_usecase.dart';
+import 'auth_message_key.dart';
 part 'auth_state.dart';
 
 class AuthCubit extends Cubit<AuthState> {
@@ -106,7 +105,7 @@ class AuthCubit extends Cubit<AuthState> {
   Future<void> signIn({required String email, required String password}) async {
     emit(AuthLoading(action: AuthAction.signIn));
     final result = await _signInUsecase(email, password);
-    result.fold((failure) => emit(AuthError(mapFailureToMessage(failure))), (
+    result.fold((failure) => emit(AuthError(mapFailureToMessageKey(failure))), (
       user,
     ) {
       if (user.isEmailVerified) {
@@ -124,7 +123,7 @@ class AuthCubit extends Cubit<AuthState> {
   }) async {
     emit(AuthLoading(action: AuthAction.signUp));
     final result = await _signUpUsecase(email, password, name);
-    result.fold((failure) => emit(AuthError(mapFailureToMessage(failure))), (
+    result.fold((failure) => emit(AuthError(mapFailureToMessageKey(failure))), (
       user,
     ) async {
       _sendEmailVerificationUsecase();
@@ -139,7 +138,7 @@ class AuthCubit extends Cubit<AuthState> {
       if (failure is SignInAbortedFailure) {
         emit(Unauthenticated());
       } else {
-        emit(AuthError(mapFailureToMessage(failure)));
+        emit(AuthError(mapFailureToMessageKey(failure)));
       }
     }, (user) => emit(Authenticated(user)));
   }
@@ -148,7 +147,7 @@ class AuthCubit extends Cubit<AuthState> {
     emit(AuthLoading(action: AuthAction.signOut));
     final result = await _signOutUsecase();
     result.fold(
-      (failure) => emit(AuthError(mapFailureToMessage(failure))),
+      (failure) => emit(AuthError(mapFailureToMessageKey(failure))),
       (_) => emit(Unauthenticated()),
     );
   }
@@ -163,12 +162,15 @@ class AuthCubit extends Cubit<AuthState> {
 
     result.fold(
       (failure) => emit(
-        UnverifiedEmail(currentUser, message: mapFailureToMessage(failure)),
+        UnverifiedEmail(
+          currentUser,
+          messageKey: mapFailureToMessageKey(failure),
+        ),
       ),
       (_) => emit(
         UnverifiedEmail(
           currentUser,
-          message: SuccessMessages.emailVerificationSent,
+          messageKey: AuthMessageKey.emailVerificationSent,
         ),
       ),
     );
@@ -184,7 +186,10 @@ class AuthCubit extends Cubit<AuthState> {
 
     result.fold(
       (failure) => emit(
-        UnverifiedEmail(currentUser, message: mapFailureToMessage(failure)),
+        UnverifiedEmail(
+          currentUser,
+          messageKey: mapFailureToMessageKey(failure),
+        ),
       ),
       (isVerified) {
         if (isVerified) {
@@ -193,7 +198,7 @@ class AuthCubit extends Cubit<AuthState> {
           emit(
             UnverifiedEmail(
               currentUser,
-              message: ErrorMessages.emailNotVerified,
+              messageKey: AuthMessageKey.emailNotVerified,
             ),
           );
         }
@@ -205,24 +210,24 @@ class AuthCubit extends Cubit<AuthState> {
     emit(AuthLoading(action: AuthAction.resetPassword));
     final result = await _resetPasswordUsecase(email);
     result.fold(
-      (failure) => emit(AuthError(mapFailureToMessage(failure))),
+      (failure) => emit(AuthError(mapFailureToMessageKey(failure))),
       (_) => emit(PasswordResetSent()),
     );
   }
 
   // ─── Failure Mapper ────────────────────────────────────────────────────────
 
-  String mapFailureToMessage(Failure failure) {
+  AuthMessageKey mapFailureToMessageKey(Failure failure) {
     return switch (failure) {
-      ServerFailure() => ErrorMessages.server,
-      OfflineFailure() => ErrorMessages.offline,
-      EmailAlreadyInUseFailure() => ErrorMessages.emailAlreadyInUse,
-      InvalidCredentialFailure() => ErrorMessages.invalidCredential,
-      NotAuthenticatedFailure() => ErrorMessages.notAuthenticated,
-      SignInAbortedFailure() => ErrorMessages.signInAborted,
-      EmailNotVerifiedFailure() => ErrorMessages.emailNotVerified,
-      TooManyRequestsFailure() => ErrorMessages.tooManyRequests,
-      _ => ErrorMessages.unexpected,
+      ServerFailure() => AuthMessageKey.server,
+      OfflineFailure() => AuthMessageKey.offline,
+      EmailAlreadyInUseFailure() => AuthMessageKey.emailAlreadyInUse,
+      InvalidCredentialFailure() => AuthMessageKey.invalidCredential,
+      NotAuthenticatedFailure() => AuthMessageKey.notAuthenticated,
+      SignInAbortedFailure() => AuthMessageKey.signInAborted,
+      EmailNotVerifiedFailure() => AuthMessageKey.emailNotVerified,
+      TooManyRequestsFailure() => AuthMessageKey.tooManyRequests,
+      _ => AuthMessageKey.unexpected,
     };
   }
 
