@@ -22,20 +22,41 @@ class MessageLookup extends MessageLookupByLibrary {
 
   static String m0(requirements) => "يجب أن تحتوي على: ${requirements}";
 
-  static String m1(seconds) => "إعادة الإرسال خلال ${seconds} ثانية";
+  static String m1(count) => "${count} بلاغ في انتظار المزامنة";
 
-  static String m2(email) =>
+  static String m2(seconds) => "إعادة الإرسال خلال ${seconds} ثانية";
+
+  static String m3(email) =>
       "تم إرسال رابط التحقق إلى:\n${email}\nيرجى التحقق من حسابك للمتابعة.";
 
-  static String m3(seconds) => "انتظر ${seconds} ثانية لإعادة الإرسال";
+  static String m4(seconds) => "انتظر ${seconds} ثانية لإعادة الإرسال";
 
   final messages = _notInlinedMessages(_notInlinedMessages);
   static Map<String, Function> _notInlinedMessages(_) => <String, Function>{
+    "address": MessageLookupByLibrary.simpleMessage("العنوان (اختياري)"),
+    "allowLocation": MessageLookupByLibrary.simpleMessage("السماح"),
     "appName": MessageLookupByLibrary.simpleMessage("PlantDoctor"),
     "appTagline": MessageLookupByLibrary.simpleMessage(
       "اكتشاف أمراض النباتات بالذكاء الاصطناعي",
     ),
+    "arabic": MessageLookupByLibrary.simpleMessage("العربية"),
+    "askPlantDoctor": MessageLookupByLibrary.simpleMessage(
+      "إسأل طبيب النباتات...",
+    ),
     "assistant": MessageLookupByLibrary.simpleMessage("المساعد"),
+    "attachImage": MessageLookupByLibrary.simpleMessage("إرفاق صورة (اختياري)"),
+    "attachedImage": MessageLookupByLibrary.simpleMessage("الصورة المرفقة"),
+    "cacheError": MessageLookupByLibrary.simpleMessage(
+      "حدث خطأ في التخزين المؤقت. يرجى المحاولة مرة أخرى.",
+    ),
+    "camera": MessageLookupByLibrary.simpleMessage("الكاميرا"),
+    "cancel": MessageLookupByLibrary.simpleMessage("إلغاء"),
+    "chatEmptySubtitle": MessageLookupByLibrary.simpleMessage(
+      "التقط صورة لنباتك أو اكتب\nسؤالاً للبدء.",
+    ),
+    "chatEmptyTitle": MessageLookupByLibrary.simpleMessage("إسأل طبيب النبات"),
+    "chatHistory": MessageLookupByLibrary.simpleMessage("سجل المحادثات"),
+    "chooseFromGallery": MessageLookupByLibrary.simpleMessage("اختر من المعرض"),
     "confirmPassword": MessageLookupByLibrary.simpleMessage(
       "تأكيد كلمة المرور",
     ),
@@ -43,6 +64,20 @@ class MessageLookup extends MessageLookupByLibrary {
     "createAccountDescription": MessageLookupByLibrary.simpleMessage(
       "أنشئ حسابك لبدء اكتشاف أمراض النباتات فورًا",
     ),
+    "darkMode": MessageLookupByLibrary.simpleMessage("الوضع الداكن"),
+    "delete": MessageLookupByLibrary.simpleMessage("حذف"),
+    "deleteChat": MessageLookupByLibrary.simpleMessage("حذف المحادثة"),
+    "deleteChatConfirm": MessageLookupByLibrary.simpleMessage(
+      "هل أنت متأكد أنك تريد حذف هذه المحادثة؟",
+    ),
+    "description": MessageLookupByLibrary.simpleMessage(
+      "صف لنا مشكلتك بالتفصيل",
+    ),
+    "descriptionMinLength": MessageLookupByLibrary.simpleMessage(
+      "يجب أن يكون الوصف 10 أحرف على الأقل",
+    ),
+    "descriptionRequired": MessageLookupByLibrary.simpleMessage("الوصف مطلوب"),
+    "done": MessageLookupByLibrary.simpleMessage("تم"),
     "dontHaveAnAccount": MessageLookupByLibrary.simpleMessage("ليس لديك حساب؟"),
     "email": MessageLookupByLibrary.simpleMessage("البريد الإلكتروني"),
     "emailAddress": MessageLookupByLibrary.simpleMessage(
@@ -60,6 +95,24 @@ class MessageLookup extends MessageLookupByLibrary {
     "emailVerificationSent": MessageLookupByLibrary.simpleMessage(
       "تم إرسال رسالة تحقق إلى بريدك الإلكتروني. يرجى التحقق من صندوق الوارد.",
     ),
+    "english": MessageLookupByLibrary.simpleMessage("الإنجليزية"),
+    "errorModel": MessageLookupByLibrary.simpleMessage(
+      "فشل تصنيف الصورة. يرجى المحاولة مرة أخرى.",
+    ),
+    "fieldRequired": MessageLookupByLibrary.simpleMessage("هذا الحقل مطلوب"),
+    "forceUpdateButton": MessageLookupByLibrary.simpleMessage(
+      "تنزيل أحدث إصدار",
+    ),
+    "forceUpdateMessage": MessageLookupByLibrary.simpleMessage(
+      "هذا الإصدار لم يعد مدعوماً. يرجى تنزيل أحدث إصدار لمتابعة استخدام التطبيق.",
+    ),
+    "forceUpdateRetry": MessageLookupByLibrary.simpleMessage(
+      "قمت بالتحديث بالفعل؟ اضغط للمتابعة",
+    ),
+    "forceUpdateTitle": MessageLookupByLibrary.simpleMessage("تحديث مطلوب 🚨"),
+    "forceUpdateUrlError": MessageLookupByLibrary.simpleMessage(
+      "تعذّر فتح رابط التنزيل. يرجى التواصل مع الدعم.",
+    ),
     "forgotPassword": MessageLookupByLibrary.simpleMessage(
       "هل نسيت كلمة المرور؟",
     ),
@@ -70,6 +123,7 @@ class MessageLookup extends MessageLookupByLibrary {
       "هل نسيت كلمة المرور؟",
     ),
     "fullName": MessageLookupByLibrary.simpleMessage("الاسم الكامل"),
+    "gallery": MessageLookupByLibrary.simpleMessage("المعرض"),
     "iVerifiedMyEmail": MessageLookupByLibrary.simpleMessage(
       "لقد قمت بتأكيد بريدي الإلكتروني",
     ),
@@ -79,16 +133,47 @@ class MessageLookup extends MessageLookupByLibrary {
     "joinPlantDoctor": MessageLookupByLibrary.simpleMessage(
       "انضم إلى PlantDoctor 🌱",
     ),
+    "language": MessageLookupByLibrary.simpleMessage("اللغة"),
+    "lightMode": MessageLookupByLibrary.simpleMessage("الوضع الفاتح"),
+    "locationPermissionMessage": MessageLookupByLibrary.simpleMessage(
+      "نحتاج موقعك لإرفاق إحداثيات GPS بتقارير أمراض النباتات. يساعد هذا وزارة الزراعة في تتبع تفشي الأمراض في جميع أنحاء البلاد.",
+    ),
+    "locationPermissionTitle": MessageLookupByLibrary.simpleMessage(
+      "مطلوب إذن الموقع",
+    ),
+    "locationServiceOffMessage": MessageLookupByLibrary.simpleMessage(
+      "يرجى تفعيل خدمات الموقع لإرفاق موقع نباتك بالتقرير.",
+    ),
+    "locationServiceOffTitle": MessageLookupByLibrary.simpleMessage(
+      "خدمة الموقع معطلة",
+    ),
+    "micComingSoonAction": MessageLookupByLibrary.simpleMessage("حسناً"),
+    "micComingSoonContent": MessageLookupByLibrary.simpleMessage(
+      "ستكون ميزة الإدخال الصوتي متاحة في تحديث قادم.",
+    ),
+    "micComingSoonTitle": MessageLookupByLibrary.simpleMessage("قريباً"),
     "ministry": MessageLookupByLibrary.simpleMessage("الوزارة"),
+    "newChat": MessageLookupByLibrary.simpleMessage("محادثة جديدة"),
     "noChatHistoryYet": MessageLookupByLibrary.simpleMessage(
       "لا يوجد سجل محادثات بعد",
     ),
+    "noInternet": MessageLookupByLibrary.simpleMessage("لا يوجد إنترنت"),
     "notAuthenticated": MessageLookupByLibrary.simpleMessage(
       "لم يتم العثور على حساب بهذا البريد الإلكتروني. يرجى إنشاء حساب أولاً.",
+    ),
+    "offlineClassificationQueued": MessageLookupByLibrary.simpleMessage(
+      "أنت غير متصل بالإنترنت. تم إرسال تصنيف الصورة وحفظه محليًا، وسيتم مزامنته تلقائيًا عند عودة الاتصال.",
+    ),
+    "offlineDeleteError": MessageLookupByLibrary.simpleMessage(
+      "لا يمكن الحذف دون اتصال. يرجى الاتصال بالإنترنت والمحاولة مرة أخرى.",
     ),
     "offlineError": MessageLookupByLibrary.simpleMessage(
       "أنت غير متصل بالإنترنت. يرجى التحقق من اتصالك.",
     ),
+    "offlinePromptError": MessageLookupByLibrary.simpleMessage(
+      "أنت غير متصل بالإنترنت. يمكنك تشخيص النباتات بالصور فقط — الرسائل النصية تحتاج إلى اتصال.",
+    ),
+    "openSettings": MessageLookupByLibrary.simpleMessage("فتح الإعدادات"),
     "or": MessageLookupByLibrary.simpleMessage("أو"),
     "password": MessageLookupByLibrary.simpleMessage("كلمة المرور"),
     "passwordInclude": m0,
@@ -111,6 +196,15 @@ class MessageLookup extends MessageLookupByLibrary {
     "passwordsDoNotMatch": MessageLookupByLibrary.simpleMessage(
       "كلمتا المرور غير متطابقتين",
     ),
+    "patchDialogButton": MessageLookupByLibrary.simpleMessage("حسناً"),
+    "patchDialogMessage": MessageLookupByLibrary.simpleMessage(
+      "قمنا بإصلاح بعض المشكلات وتحسين التطبيق. استمتع بأحدث إصدار! 🎉",
+    ),
+    "patchDialogTitle": MessageLookupByLibrary.simpleMessage(
+      "تم تحديث التطبيق",
+    ),
+    "pendingReports": m1,
+    "phoneNumber": MessageLookupByLibrary.simpleMessage("رقم الهاتف"),
     "phoneRequired": MessageLookupByLibrary.simpleMessage("رقم الهاتف مطلوب"),
     "postAddedSuccessfully": MessageLookupByLibrary.simpleMessage(
       "تمت إضافة المنشور بنجاح",
@@ -122,8 +216,32 @@ class MessageLookup extends MessageLookupByLibrary {
       "تم تحديث المنشور بنجاح",
     ),
     "report": MessageLookupByLibrary.simpleMessage("التقرير"),
+    "reportSavedOffline": MessageLookupByLibrary.simpleMessage(
+      "تم حفظ البلاغ. سيتم المزامنة عند الاتصال",
+    ),
+    "reportSavedOfflineSubtitle": MessageLookupByLibrary.simpleMessage(
+      "أنت غير متصل بالإنترنت حالياً، سيتم إرسال البلاغ تلقائياً عند عودة الاتصال.",
+    ),
+    "reportSavedOfflineTitle": MessageLookupByLibrary.simpleMessage(
+      "تم حفظ البلاغ",
+    ),
+    "reportSubmittedSubtitle": MessageLookupByLibrary.simpleMessage(
+      "تم استلام بلاغك، وسنتواصل معك في أقرب وقت ممكن.",
+    ),
+    "reportSubmittedSuccess": MessageLookupByLibrary.simpleMessage(
+      "تم إرسال البلاغ بنجاح",
+    ),
+    "reportSubmittedTitle": MessageLookupByLibrary.simpleMessage(
+      "تم إرسال البلاغ",
+    ),
+    "reportWillBeSavedOffline": MessageLookupByLibrary.simpleMessage(
+      "أنت غير متصل. سيتم مزامنة البلاغ عند الاتصال",
+    ),
     "resendEmail": MessageLookupByLibrary.simpleMessage("إعادة إرسال البريد"),
-    "resendInSeconds": m1,
+    "resendInSeconds": m2,
+    "retry": MessageLookupByLibrary.simpleMessage("إعادة المحاولة"),
+    "saveReport": MessageLookupByLibrary.simpleMessage("حفظ البلاغ"),
+    "selectImage": MessageLookupByLibrary.simpleMessage("اختر صورة"),
     "sendResetLink": MessageLookupByLibrary.simpleMessage(
       "إرسال رابط إعادة التعيين",
     ),
@@ -157,7 +275,21 @@ class MessageLookup extends MessageLookupByLibrary {
       "تسجيل الدخول باستخدام X",
     ),
     "signOut": MessageLookupByLibrary.simpleMessage("تسجيل الخروج"),
+    "signOutConfirmMessage": MessageLookupByLibrary.simpleMessage(
+      "هل أنت متأكد أنك تريد تسجيل الخروج؟",
+    ),
+    "signOutConfirmTitle": MessageLookupByLibrary.simpleMessage("تسجيل الخروج"),
     "signUp": MessageLookupByLibrary.simpleMessage("إنشاء حساب"),
+    "startAChatToGetPlantCareAdvice": MessageLookupByLibrary.simpleMessage(
+      "ابدأ محادثة للحصول على نصائح العناية بالنبات",
+    ),
+    "submitReport": MessageLookupByLibrary.simpleMessage("إرسال البلاغ"),
+    "syncFailedOffline": MessageLookupByLibrary.simpleMessage(
+      "فشلت المزامنة — تحقق من اتصالك",
+    ),
+    "syncNow": MessageLookupByLibrary.simpleMessage("مزامنة الآن"),
+    "syncingReports": MessageLookupByLibrary.simpleMessage("جارٍ المزامنة..."),
+    "takePhoto": MessageLookupByLibrary.simpleMessage("التقط صورة"),
     "tooManyRequests": MessageLookupByLibrary.simpleMessage(
       "عدد المحاولات كبير جدًا. يرجى المحاولة لاحقًا.",
     ),
@@ -176,8 +308,12 @@ class MessageLookup extends MessageLookupByLibrary {
     "validPhoneNumber": MessageLookupByLibrary.simpleMessage(
       "أدخل رقم هاتف صحيح",
     ),
-    "verificationEmailSentTo": m2,
-    "waitToResend": m3,
+    "verificationEmailSentTo": m3,
+    "waitToResend": m4,
+    "waitingForLocation": MessageLookupByLibrary.simpleMessage(
+      "جارٍ الانتظار للحصول على الموقع...",
+    ),
     "welcomeBack": MessageLookupByLibrary.simpleMessage("مرحبًا بعودتك 👋"),
+    "yesterday": MessageLookupByLibrary.simpleMessage("أمس"),
   };
 }

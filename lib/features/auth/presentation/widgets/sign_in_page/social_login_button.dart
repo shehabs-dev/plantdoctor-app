@@ -45,8 +45,8 @@ class SocialLoginButton extends StatelessWidget {
           onTap: onPressed,
           borderRadius: radius,
           child: Container(
-            width: isIconOnly ? AppSizes.iconBtnSizeLg : null,
-            height: isIconOnly ? AppSizes.iconBtnSizeLg : null,
+            width: isIconOnly ? AppSizes.iconBtnLg : null,
+            height: isIconOnly ? AppSizes.iconBtnLg : null,
             padding: isIconOnly
                 ? null
                 : padding ??

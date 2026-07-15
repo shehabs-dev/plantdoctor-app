@@ -1,7 +1,11 @@
 import 'dart:async';
+import 'dart:io';
 import 'package:equatable/equatable.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:fpdart/fpdart.dart';
 import '../../../../../core/errors/failures.dart';
+import '../../../../../core/helpers/failure_x.dart';
+import '../../../../../core/services/notifications/notification_service.dart';
 import '../../../domain/entities/auth_provider.dart';
 import '../../../domain/entities/user_entity.dart';
 import '../../../domain/usecases/auth_state_changes_usecase.dart';
@@ -14,7 +18,9 @@ import '../../../domain/usecases/sign_in_usecase.dart';
 import '../../../domain/usecases/sign_in_with_provider_usecase.dart';
 import '../../../domain/usecases/sign_out_usecase.dart';
 import '../../../domain/usecases/sign_up_usecase.dart';
-import 'auth_message_key.dart';
+import '../../../../../core/helpers/error_message_key.dart';
+import '../../../domain/usecases/update_picture_usecase.dart';
+
 part 'auth_state.dart';
 
 class AuthCubit extends Cubit<AuthState> {
@@ -28,6 +34,7 @@ class AuthCubit extends Cubit<AuthState> {
   final GetCachedUserUsecase _getCachedUserUsecase;
   final SignOutUsecase _signOutUsecase;
   final SignUpUsecase _signUpUsecase;
+  final UpdatePictureUsecase _updatePictureUsecase;
 
   late final StreamSubscription _authSubscription;
 
@@ -42,7 +49,9 @@ class AuthCubit extends Cubit<AuthState> {
     required AuthStateChangesUsecase authStateChangesUsecase,
     required GetUserDataUsecase getUserDataUsecase,
     required GetCachedUserUsecase getCachedUserUsecase,
-  }) : _getCachedUserUsecase = getCachedUserUsecase,
+    required UpdatePictureUsecase updatePictureUsecase,
+  }) : _updatePictureUsecase = updatePictureUsecase,
+       _getCachedUserUsecase = getCachedUserUsecase,
        _authStateChangesUsecase = authStateChangesUsecase,
        _getUserDataUsecase = getUserDataUsecase,
        _isEmailVerifiedUsecase = isEmailVerifiedUsecase,
@@ -52,7 +61,6 @@ class AuthCubit extends Cubit<AuthState> {
        _signInWithProviderUsecase = signInWithProviderUsecase,
        _signOutUsecase = signOutUsecase,
        _signUpUsecase = signUpUsecase,
-
        super(AuthInitial()) {
     _checkCachedUser();
     _stream();
@@ -63,6 +71,7 @@ class AuthCubit extends Cubit<AuthState> {
   // online: listens to Firebase auth state changes
   void _stream() {
     _authSubscription = _authStateChangesUsecase().listen((result) {
+      if (state.isLoading(AuthAction.googleSignIn)) return;
       result.fold((failure) => emit(Unauthenticated()), (user) async {
         if (user == null) {
           emit(Unauthenticated());
@@ -73,13 +82,14 @@ class AuthCubit extends Cubit<AuthState> {
         userDataResult.fold(
           (failure) {
             if (failure is OfflineFailure) {
-              return; // ✅ offline — keep cache state
+              return; //  offline — keep cache state
             }
 
             emit(Unauthenticated()); // only emit unauth for real failures
           },
-          (userData) {
+          (userData) async {
             if (user.isEmailVerified) {
+              await _handleNotificationSubscription(userData);
               emit(Authenticated(userData));
             } else {
               emit(UnverifiedEmail(userData));
@@ -105,10 +115,9 @@ class AuthCubit extends Cubit<AuthState> {
   Future<void> signIn({required String email, required String password}) async {
     emit(AuthLoading(action: AuthAction.signIn));
     final result = await _signInUsecase(email, password);
-    result.fold((failure) => emit(AuthError(mapFailureToMessageKey(failure))), (
-      user,
-    ) {
+    result.fold((failure) => emit(AuthError(failure.toKey())), (user) async {
       if (user.isEmailVerified) {
+        await _handleNotificationSubscription(user);
         emit(Authenticated(user));
       } else {
         emit(UnverifiedEmail(user));
@@ -123,33 +132,41 @@ class AuthCubit extends Cubit<AuthState> {
   }) async {
     emit(AuthLoading(action: AuthAction.signUp));
     final result = await _signUpUsecase(email, password, name);
-    result.fold((failure) => emit(AuthError(mapFailureToMessageKey(failure))), (
-      user,
-    ) async {
+    result.fold((failure) => emit(AuthError(failure.toKey())), (user) async {
       _sendEmailVerificationUsecase();
       emit(UnverifiedEmail(user));
     });
   }
 
   Future<void> signInWithProvider({required AppAuthProvider provider}) async {
-    emit(AuthLoading(action: AuthAction.googleSignIn));
-    final result = await _signInWithProviderUsecase(provider);
-    result.fold((failure) {
-      if (failure is SignInAbortedFailure) {
-        emit(Unauthenticated());
-      } else {
-        emit(AuthError(mapFailureToMessageKey(failure)));
-      }
-    }, (user) => emit(Authenticated(user)));
+    final result = await _signInWithProviderUsecase(
+      provider,
+      onAccountSelected: () =>
+          emit(AuthLoading(action: AuthAction.googleSignIn)),
+    );
+
+    result.fold(
+      (failure) {
+        if (failure is SignInAbortedFailure) {
+          emit(Unauthenticated());
+        } else {
+          emit(AuthError(failure.toKey()));
+        }
+      },
+      (user) async {
+        await _handleNotificationSubscription(user);
+        emit(Authenticated(user));
+      },
+    );
   }
 
   Future<void> signOut() async {
     emit(AuthLoading(action: AuthAction.signOut));
     final result = await _signOutUsecase();
-    result.fold(
-      (failure) => emit(AuthError(mapFailureToMessageKey(failure))),
-      (_) => emit(Unauthenticated()),
-    );
+    result.fold((failure) => emit(AuthError(failure.toKey())), (_) async {
+      await NotificationService.instance.unsubscribeFromAllTopics();
+      emit(Unauthenticated());
+    });
   }
 
   Future<void> sendEmailVerification() async {
@@ -161,16 +178,12 @@ class AuthCubit extends Cubit<AuthState> {
     final result = await _sendEmailVerificationUsecase();
 
     result.fold(
-      (failure) => emit(
-        UnverifiedEmail(
-          currentUser,
-          messageKey: mapFailureToMessageKey(failure),
-        ),
-      ),
+      (failure) =>
+          emit(UnverifiedEmail(currentUser, messageKey: failure.toKey())),
       (_) => emit(
         UnverifiedEmail(
           currentUser,
-          messageKey: AuthMessageKey.emailVerificationSent,
+          messageKey: ErrorMessageKey.emailVerificationSent,
         ),
       ),
     );
@@ -185,12 +198,8 @@ class AuthCubit extends Cubit<AuthState> {
     final result = await _isEmailVerifiedUsecase();
 
     result.fold(
-      (failure) => emit(
-        UnverifiedEmail(
-          currentUser,
-          messageKey: mapFailureToMessageKey(failure),
-        ),
-      ),
+      (failure) =>
+          emit(UnverifiedEmail(currentUser, messageKey: failure.toKey())),
       (isVerified) {
         if (isVerified) {
           emit(Authenticated(currentUser));
@@ -198,7 +207,7 @@ class AuthCubit extends Cubit<AuthState> {
           emit(
             UnverifiedEmail(
               currentUser,
-              messageKey: AuthMessageKey.emailNotVerified,
+              messageKey: ErrorMessageKey.emailNotVerified,
             ),
           );
         }
@@ -210,30 +219,46 @@ class AuthCubit extends Cubit<AuthState> {
     emit(AuthLoading(action: AuthAction.resetPassword));
     final result = await _resetPasswordUsecase(email);
     result.fold(
-      (failure) => emit(AuthError(mapFailureToMessageKey(failure))),
+      (failure) => emit(AuthError(failure.toKey())),
       (_) => emit(PasswordResetSent()),
     );
   }
 
-  // ─── Failure Mapper ────────────────────────────────────────────────────────
+  // ─── Profile ───────────────────────────────────────────────────────────────
 
-  AuthMessageKey mapFailureToMessageKey(Failure failure) {
-    return switch (failure) {
-      ServerFailure() => AuthMessageKey.server,
-      OfflineFailure() => AuthMessageKey.offline,
-      EmailAlreadyInUseFailure() => AuthMessageKey.emailAlreadyInUse,
-      InvalidCredentialFailure() => AuthMessageKey.invalidCredential,
-      NotAuthenticatedFailure() => AuthMessageKey.notAuthenticated,
-      SignInAbortedFailure() => AuthMessageKey.signInAborted,
-      EmailNotVerifiedFailure() => AuthMessageKey.emailNotVerified,
-      TooManyRequestsFailure() => AuthMessageKey.tooManyRequests,
-      _ => AuthMessageKey.unexpected,
-    };
+  Future<void> updatePicture(File image) async {
+    if (state is! Authenticated) return;
+    final currentUser = (state as Authenticated).user;
+
+    emit(AuthLoading(action: AuthAction.updatePicture));
+
+    final result =
+        await _updatePictureUsecase(
+          userId: currentUser.id!,
+          image: image,
+        ).timeout(
+          const Duration(seconds: 5),
+          onTimeout: () => left(OfflineFailure()),
+        );
+
+    result.fold(
+      (failure) =>
+          emit(Authenticated(currentUser, pictureError: failure.toKey())),
+      (updatedUser) => emit(Authenticated(updatedUser)),
+    );
   }
+
+  // ─── Failure Mapper ────────────────────────────────────────────────────────
 
   @override
   Future<void> close() {
     _authSubscription.cancel();
     return super.close();
   }
+}
+
+// ─── Notification Subscriptions ─────────────────────────────────
+Future<void> _handleNotificationSubscription(UserEntity user) async {
+  // ── Every user gets this — always subscribe to all_users ────────────────
+  await NotificationService.instance.subscribeToTopic(NotificationTopics.all);
 }

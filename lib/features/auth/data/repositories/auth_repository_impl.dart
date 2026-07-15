@@ -1,13 +1,14 @@
+import 'dart:io';
+
 import 'package:fpdart/fpdart.dart';
-import 'package:plantdoctor/features/auth/data/datasources/user_local_data_source.dart';
 import '../../../../core/helpers/auth_failure_mapper.dart';
 import '../../../../core/errors/exceptions.dart';
 import '../../../../core/errors/failures.dart';
-import '../../../../core/network/network_info.dart';
 import '../../domain/entities/auth_provider.dart';
 import '../../domain/entities/user_entity.dart';
 import '../../domain/repositories/repository.dart';
 import '../datasources/auth_remote_data_source.dart';
+import '../datasources/user_local_data_source.dart';
 import '../datasources/user_remote_data_source.dart';
 import '../models/user_model.dart';
 
@@ -15,19 +16,14 @@ class AuthRepositoryImpl implements Repository {
   final AuthRemoteDataSource _authDataSource;
   final UserRemoteDataSource _userDataSource;
   final UserLocalDataSource _localDataSource;
-  final NetworkInfo _networkInfo;
 
   AuthRepositoryImpl({
     required AuthRemoteDataSource authDataSource,
     required UserRemoteDataSource userDataSource,
-    required NetworkInfo networkInfo,
     required UserLocalDataSource localDataSource,
   }) : _localDataSource = localDataSource,
        _authDataSource = authDataSource,
-       _userDataSource = userDataSource,
-       _networkInfo = networkInfo;
-
-  Future<bool> get _isConnected => _networkInfo.isConnected;
+       _userDataSource = userDataSource;
 
   // ─── Stream ────────────────────────────────────────────────────────────────
 
@@ -85,10 +81,12 @@ class AuthRepositoryImpl implements Repository {
   @override
   Future<Either<Failure, UserEntity>> signInWithProvider({
     required AppAuthProvider provider,
+    void Function()? onAccountSelected,
   }) async {
     try {
       final firebaseUser = await _authDataSource.signInWithProvider(
         provider: provider,
+        onAccountSelected: onAccountSelected,
       );
 
       UserModel user;
@@ -104,6 +102,8 @@ class AuthRepositoryImpl implements Repository {
       return left(AuthFailureMapper.fromFirebaseCode(e.code));
     } on ServerException {
       return left(ServerFailure());
+    } catch (_) {
+      return left(OfflineFailure());
     }
   }
 
@@ -162,8 +162,6 @@ class AuthRepositoryImpl implements Repository {
 
   @override
   Future<Either<Failure, UserEntity>> getUserData(String userId) async {
-    if (!await _isConnected) return left(OfflineFailure());
-
     try {
       final user = await _userDataSource.getUserData(userId);
       return right(user);
@@ -174,11 +172,40 @@ class AuthRepositoryImpl implements Repository {
 
   @override
   Future<Either<Failure, Unit>> setUserData(UserEntity user) async {
-    if (!await _isConnected) return left(OfflineFailure());
-
     try {
       await _userDataSource.setUserData(user as UserModel);
       return right(unit);
+    } on ServerException {
+      return left(ServerFailure());
+    }
+  }
+
+  // ─── Profile ───────────────────────────────────────────────────────────────
+
+  @override
+  Future<Either<Failure, UserEntity>> updatePicture({
+    required String userId,
+    required File image,
+  }) async {
+    try {
+      // 1. upload to Cloudinary
+      final url = await _userDataSource.uploadPicture(
+        userId: userId,
+        image: image,
+      );
+
+      // 2. update Firestore
+      await _userDataSource.updateUserData(userId, {'picture': url});
+
+      // 3. update local cache
+      final cached = await _localDataSource.getCachedUser();
+      if (cached != null) {
+        await _localDataSource.cacheUser(cached.copyWith(picture: url));
+      }
+
+      // 4. return updated user
+      final updatedUser = await _userDataSource.getUserData(userId);
+      return right(updatedUser);
     } on ServerException {
       return left(ServerFailure());
     }

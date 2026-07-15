@@ -12,7 +12,7 @@ class RoutesPath {
   static const historyChat = '/historyChat';
   static const chat = '/chat';
   static const ministry = '/ministry';
-  static const diagnosis = '/diagnosis';
+  static const report = '/report';
   static const settings = '/settings';
   static const profile = '/profile';
 }

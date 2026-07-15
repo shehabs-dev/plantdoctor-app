@@ -8,13 +8,14 @@ AppBar buildAppBar(
   bool showDivider = true,
   List<Widget>? actions,
   VoidCallback? onBack,
+  bool centerTitle = false,
 }) {
   return AppBar(
     titleSpacing: AppSizes.spaceSm,
     leading: BackButton(onPressed: onBack ?? () => Navigator.maybePop(context)),
     title: Text(title, style: Theme.of(context).textTheme.bodyLarge),
     elevation: 0,
-    centerTitle: false,
+    centerTitle: centerTitle,
     backgroundColor: Colors.transparent,
     surfaceTintColor: Colors.transparent,
     actions: actions,

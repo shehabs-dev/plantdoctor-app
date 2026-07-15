@@ -2,7 +2,7 @@ import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import '../../../../config/localization/generated/l10n.dart';
-import '../../../../core/helpers/auth_message_key_x.dart';
+import '../../../../core/helpers/error_message_key_x.dart';
 import '../../../../core/theme/app_sizes.dart';
 import '../../../../core/widgets/app_text_form_field.dart';
 import '../cubit/auth/auth_cubit.dart';

@@ -1,0 +1,33 @@
+Citrus Healthy
+Citrus Citrus Canker
+Faba Bean Healthy
+Faba Bean Angular Leaf Spot
+Maize Healthy
+Maize Leaf Blight
+Maize Rust
+Maize Streak Virus
+Mango Healthy
+Mango Malformation
+Mango Anthracnose
+Onion Healthy
+Onion Purple Blotch
+Onion Downy Mildew
+Pomegranate Bacterial Blight
+Pomegranate Healthy
+Potato Early Blight
+Potato Healthy
+Potato Late Blight
+Rice Brown Spot
+Rice Healthy
+Rice Bacterial Blight
+Rice Blast
+Tomato Early Blight
+Tomato Healthy
+Tomato Tuta Absoluta
+Tomato Late Blight
+Tomato Mosaic Virus
+Wheat Fusarium
+Wheat Healthy
+Wheat Rust
+Wheat Septoria
+Unknown Disease

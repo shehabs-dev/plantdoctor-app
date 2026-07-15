@@ -509,11 +509,31 @@ class S {
     );
   }
 
+  /// `Description is required`
+  String get descriptionRequired {
+    return Intl.message(
+      'Description is required',
+      name: 'descriptionRequired',
+      desc: '',
+      args: [],
+    );
+  }
+
   /// `Phone number is required`
   String get phoneRequired {
     return Intl.message(
       'Phone number is required',
       name: 'phoneRequired',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Description must be at least 10 characters`
+  String get descriptionMinLength {
+    return Intl.message(
+      'Description must be at least 10 characters',
+      name: 'descriptionMinLength',
       desc: '',
       args: [],
     );
@@ -614,6 +634,16 @@ class S {
     return Intl.message('Assistant', name: 'assistant', desc: '', args: []);
   }
 
+  /// `Chat History`
+  String get chatHistory {
+    return Intl.message(
+      'Chat History',
+      name: 'chatHistory',
+      desc: '',
+      args: [],
+    );
+  }
+
   /// `Report`
   String get report {
     return Intl.message('Report', name: 'report', desc: '', args: []);
@@ -629,6 +659,581 @@ class S {
     return Intl.message(
       'No chat history yet',
       name: 'noChatHistoryYet',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Failed to run classification. Please try again.`
+  String get errorModel {
+    return Intl.message(
+      'Failed to run classification. Please try again.',
+      name: 'errorModel',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Location Access Required`
+  String get locationPermissionTitle {
+    return Intl.message(
+      'Location Access Required',
+      name: 'locationPermissionTitle',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `We need your location to attach GPS coordinates to plant disease reports. This helps the Ministry of Agriculture track disease outbreaks across the country.`
+  String get locationPermissionMessage {
+    return Intl.message(
+      'We need your location to attach GPS coordinates to plant disease reports. This helps the Ministry of Agriculture track disease outbreaks across the country.',
+      name: 'locationPermissionMessage',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Allow`
+  String get allowLocation {
+    return Intl.message('Allow', name: 'allowLocation', desc: '', args: []);
+  }
+
+  /// `Cancel`
+  String get cancel {
+    return Intl.message('Cancel', name: 'cancel', desc: '', args: []);
+  }
+
+  /// `New Chat`
+  String get newChat {
+    return Intl.message('New Chat', name: 'newChat', desc: '', args: []);
+  }
+
+  /// `Ask PlantDoctor`
+  String get chatEmptyTitle {
+    return Intl.message(
+      'Ask PlantDoctor',
+      name: 'chatEmptyTitle',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Take a photo of your plant or type\na question to get started.`
+  String get chatEmptySubtitle {
+    return Intl.message(
+      'Take a photo of your plant or type\na question to get started.',
+      name: 'chatEmptySubtitle',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Coming Soon`
+  String get micComingSoonTitle {
+    return Intl.message(
+      'Coming Soon',
+      name: 'micComingSoonTitle',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Voice input will be available in an upcoming release.`
+  String get micComingSoonContent {
+    return Intl.message(
+      'Voice input will be available in an upcoming release.',
+      name: 'micComingSoonContent',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Got it`
+  String get micComingSoonAction {
+    return Intl.message(
+      'Got it',
+      name: 'micComingSoonAction',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Location Service Off`
+  String get locationServiceOffTitle {
+    return Intl.message(
+      'Location Service Off',
+      name: 'locationServiceOffTitle',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Please enable location services to attach your plant's location to the report.`
+  String get locationServiceOffMessage {
+    return Intl.message(
+      'Please enable location services to attach your plant\'s location to the report.',
+      name: 'locationServiceOffMessage',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Open Settings`
+  String get openSettings {
+    return Intl.message(
+      'Open Settings',
+      name: 'openSettings',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Retry`
+  String get retry {
+    return Intl.message('Retry', name: 'retry', desc: '', args: []);
+  }
+
+  /// `Delete Chat`
+  String get deleteChat {
+    return Intl.message('Delete Chat', name: 'deleteChat', desc: '', args: []);
+  }
+
+  /// `Are you sure you want to delete this chat?`
+  String get deleteChatConfirm {
+    return Intl.message(
+      'Are you sure you want to delete this chat?',
+      name: 'deleteChatConfirm',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Delete`
+  String get delete {
+    return Intl.message('Delete', name: 'delete', desc: '', args: []);
+  }
+
+  /// `Yesterday`
+  String get yesterday {
+    return Intl.message('Yesterday', name: 'yesterday', desc: '', args: []);
+  }
+
+  /// `Dark Mode`
+  String get darkMode {
+    return Intl.message('Dark Mode', name: 'darkMode', desc: '', args: []);
+  }
+
+  /// `Light Mode`
+  String get lightMode {
+    return Intl.message('Light Mode', name: 'lightMode', desc: '', args: []);
+  }
+
+  /// `Language`
+  String get language {
+    return Intl.message('Language', name: 'language', desc: '', args: []);
+  }
+
+  /// `Start a chat to get plant care advice`
+  String get startAChatToGetPlantCareAdvice {
+    return Intl.message(
+      'Start a chat to get plant care advice',
+      name: 'startAChatToGetPlantCareAdvice',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `English`
+  String get english {
+    return Intl.message('English', name: 'english', desc: '', args: []);
+  }
+
+  /// `Arabic`
+  String get arabic {
+    return Intl.message('Arabic', name: 'arabic', desc: '', args: []);
+  }
+
+  /// `Address (Optional)`
+  String get address {
+    return Intl.message(
+      'Address (Optional)',
+      name: 'address',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Ask PlantDoctor...`
+  String get askPlantDoctor {
+    return Intl.message(
+      'Ask PlantDoctor...',
+      name: 'askPlantDoctor',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `An error occurred while caching. Please try again.`
+  String get cacheError {
+    return Intl.message(
+      'An error occurred while caching. Please try again.',
+      name: 'cacheError',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Waiting for location...`
+  String get waitingForLocation {
+    return Intl.message(
+      'Waiting for location...',
+      name: 'waitingForLocation',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Describe your issue in detail`
+  String get description {
+    return Intl.message(
+      'Describe your issue in detail',
+      name: 'description',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Phone Number`
+  String get phoneNumber {
+    return Intl.message(
+      'Phone Number',
+      name: 'phoneNumber',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Attach Image (Optional)`
+  String get attachImage {
+    return Intl.message(
+      'Attach Image (Optional)',
+      name: 'attachImage',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Attached Image`
+  String get attachedImage {
+    return Intl.message(
+      'Attached Image',
+      name: 'attachedImage',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Camera`
+  String get camera {
+    return Intl.message('Camera', name: 'camera', desc: '', args: []);
+  }
+
+  /// `Gallery`
+  String get gallery {
+    return Intl.message('Gallery', name: 'gallery', desc: '', args: []);
+  }
+
+  /// `Submit Report`
+  String get submitReport {
+    return Intl.message(
+      'Submit Report',
+      name: 'submitReport',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Save Report`
+  String get saveReport {
+    return Intl.message('Save Report', name: 'saveReport', desc: '', args: []);
+  }
+
+  /// `Report submitted successfully`
+  String get reportSubmittedSuccess {
+    return Intl.message(
+      'Report submitted successfully',
+      name: 'reportSubmittedSuccess',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Report saved. Will sync when online`
+  String get reportSavedOffline {
+    return Intl.message(
+      'Report saved. Will sync when online',
+      name: 'reportSavedOffline',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `You're offline. Report will sync when connected`
+  String get reportWillBeSavedOffline {
+    return Intl.message(
+      'You\'re offline. Report will sync when connected',
+      name: 'reportWillBeSavedOffline',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `This field is required`
+  String get fieldRequired {
+    return Intl.message(
+      'This field is required',
+      name: 'fieldRequired',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `{count} pending report(s) waiting to sync`
+  String pendingReports(int count) {
+    return Intl.message(
+      '$count pending report(s) waiting to sync',
+      name: 'pendingReports',
+      desc: '',
+      args: [count],
+    );
+  }
+
+  /// `You're offline. Only image diagnosis works without internet — text messages require a connection.`
+  String get offlinePromptError {
+    return Intl.message(
+      'You\'re offline. Only image diagnosis works without internet — text messages require a connection.',
+      name: 'offlinePromptError',
+      desc: 'Error shown when user tries to send text message while offline',
+      args: [],
+    );
+  }
+
+  /// `You're offline. Image classification was sent and saved locally. Results will sync automatically when you're back online.`
+  String get offlineClassificationQueued {
+    return Intl.message(
+      'You\'re offline. Image classification was sent and saved locally. Results will sync automatically when you\'re back online.',
+      name: 'offlineClassificationQueued',
+      desc: 'Info shown when user sends image for classification while offline',
+      args: [],
+    );
+  }
+
+  /// `Cannot delete while offline. Please connect to internet and try again.`
+  String get offlineDeleteError {
+    return Intl.message(
+      'Cannot delete while offline. Please connect to internet and try again.',
+      name: 'offlineDeleteError',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Report Submitted`
+  String get reportSubmittedTitle {
+    return Intl.message(
+      'Report Submitted',
+      name: 'reportSubmittedTitle',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Your report has been received. We'll get back to you as soon as possible.`
+  String get reportSubmittedSubtitle {
+    return Intl.message(
+      'Your report has been received. We\'ll get back to you as soon as possible.',
+      name: 'reportSubmittedSubtitle',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Report Saved`
+  String get reportSavedOfflineTitle {
+    return Intl.message(
+      'Report Saved',
+      name: 'reportSavedOfflineTitle',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `You're currently offline. Your report will be sent automatically once you're back online.`
+  String get reportSavedOfflineSubtitle {
+    return Intl.message(
+      'You\'re currently offline. Your report will be sent automatically once you\'re back online.',
+      name: 'reportSavedOfflineSubtitle',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Done`
+  String get done {
+    return Intl.message('Done', name: 'done', desc: '', args: []);
+  }
+
+  /// `Take Photo`
+  String get takePhoto {
+    return Intl.message('Take Photo', name: 'takePhoto', desc: '', args: []);
+  }
+
+  /// `Choose from Gallery`
+  String get chooseFromGallery {
+    return Intl.message(
+      'Choose from Gallery',
+      name: 'chooseFromGallery',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Select Image`
+  String get selectImage {
+    return Intl.message(
+      'Select Image',
+      name: 'selectImage',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `No internet`
+  String get noInternet {
+    return Intl.message('No internet', name: 'noInternet', desc: '', args: []);
+  }
+
+  /// `Sign Out`
+  String get signOutConfirmTitle {
+    return Intl.message(
+      'Sign Out',
+      name: 'signOutConfirmTitle',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Are you sure you want to sign out?`
+  String get signOutConfirmMessage {
+    return Intl.message(
+      'Are you sure you want to sign out?',
+      name: 'signOutConfirmMessage',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `App Updated`
+  String get patchDialogTitle {
+    return Intl.message(
+      'App Updated',
+      name: 'patchDialogTitle',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `We fixed some issues and improved the app. Enjoy the latest version! 🎉`
+  String get patchDialogMessage {
+    return Intl.message(
+      'We fixed some issues and improved the app. Enjoy the latest version! 🎉',
+      name: 'patchDialogMessage',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Got it`
+  String get patchDialogButton {
+    return Intl.message(
+      'Got it',
+      name: 'patchDialogButton',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Update Required 🚨`
+  String get forceUpdateTitle {
+    return Intl.message(
+      'Update Required 🚨',
+      name: 'forceUpdateTitle',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `This version is no longer supported. Please download the latest version to continue using the app.`
+  String get forceUpdateMessage {
+    return Intl.message(
+      'This version is no longer supported. Please download the latest version to continue using the app.',
+      name: 'forceUpdateMessage',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Download Latest Version`
+  String get forceUpdateButton {
+    return Intl.message(
+      'Download Latest Version',
+      name: 'forceUpdateButton',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Could not open the download link. Please contact support.`
+  String get forceUpdateUrlError {
+    return Intl.message(
+      'Could not open the download link. Please contact support.',
+      name: 'forceUpdateUrlError',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Already updated? Tap to continue`
+  String get forceUpdateRetry {
+    return Intl.message(
+      'Already updated? Tap to continue',
+      name: 'forceUpdateRetry',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Sync now`
+  String get syncNow {
+    return Intl.message('Sync now', name: 'syncNow', desc: '', args: []);
+  }
+
+  /// `Syncing...`
+  String get syncingReports {
+    return Intl.message(
+      'Syncing...',
+      name: 'syncingReports',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Couldn't sync — check your connection`
+  String get syncFailedOffline {
+    return Intl.message(
+      'Couldn\'t sync — check your connection',
+      name: 'syncFailedOffline',
       desc: '',
       args: [],
     );

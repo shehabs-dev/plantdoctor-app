@@ -1,0 +1,18 @@
+enum ErrorMessageKey {
+  server,
+  offline,
+  offlineClassificationQueued,
+  offlinePrompt,
+  offlineDelete,
+  cache,
+  unexpected,
+  emailAlreadyInUse,
+  invalidCredential,
+  notAuthenticated,
+  signInAborted,
+  emailNotVerified,
+  tooManyRequests,
+  emailVerificationSent,
+  passwordResetSent,
+  errorModel,
+}

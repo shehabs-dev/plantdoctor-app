@@ -11,16 +11,16 @@ class BackButton extends StatelessWidget {
     return GestureDetector(
       onTap: onTap,
       child: Container(
-        width: AppSizes.iconBtnSizeMd, // 40.r
-        height: AppSizes.iconBtnSizeMd, // 40.r
+        width: AppSizes.iconBtnMd,
+        height: AppSizes.iconBtnMd,
         decoration: BoxDecoration(
           color: cs.surfaceContainerHighest,
           border: Border.all(color: cs.outline),
-          borderRadius: BorderRadius.circular(AppSizes.radiusSm), // 8.r
+          borderRadius: BorderRadius.circular(AppSizes.radiusSm),
         ),
         child: Icon(
           Icons.arrow_back_ios_new_rounded,
-          size: AppSizes.iconSm, // 16.sp
+          size: AppSizes.iconSm,
           color: cs.onSurfaceVariant,
         ),
       ),

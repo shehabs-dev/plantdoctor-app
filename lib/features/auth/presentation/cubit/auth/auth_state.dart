@@ -9,6 +9,7 @@ enum AuthAction {
   sendVerification,
   checkVerification,
   resetPassword,
+  updatePicture,
 }
 
 sealed class AuthState extends Equatable {
@@ -28,19 +29,21 @@ class AuthLoading extends AuthState {
   List<Object?> get props => [action];
 }
 
+// Add to AuthState
 class Authenticated extends AuthState {
   final UserEntity user;
-  const Authenticated(this.user);
+  final ErrorMessageKey? pictureError;
+  const Authenticated(this.user, {this.pictureError});
 
   @override
-  List<Object?> get props => [user];
+  List<Object?> get props => [user, pictureError];
 }
 
 class Unauthenticated extends AuthState {}
 
 class UnverifiedEmail extends AuthState {
   final UserEntity user;
-  final AuthMessageKey? messageKey;
+  final ErrorMessageKey? messageKey;
 
   const UnverifiedEmail(this.user, {this.messageKey});
 
@@ -49,7 +52,7 @@ class UnverifiedEmail extends AuthState {
 }
 
 class AuthError extends AuthState {
-  final AuthMessageKey messageKey;
+  final ErrorMessageKey messageKey;
   const AuthError(this.messageKey);
 
   @override

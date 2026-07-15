@@ -1,3 +1,4 @@
+import 'dart:io';
 import 'package:fpdart/fpdart.dart';
 import '../../../../core/errors/failures.dart';
 import '../entities/auth_provider.dart';
@@ -19,6 +20,7 @@ abstract class Repository {
 
   Future<Either<Failure, UserEntity>> signInWithProvider({
     required AppAuthProvider provider,
+    void Function()? onAccountSelected,
   });
 
   Future<Either<Failure, Unit>> signOut();
@@ -32,6 +34,12 @@ abstract class Repository {
   Future<Either<Failure, Unit>> setUserData(UserEntity user);
 
   Future<Either<Failure, UserEntity>> getUserData(String userId);
+
+  // ─── Profile ───────────────────────────────────────────────────────────────
+  Future<Either<Failure, UserEntity>> updatePicture({
+    required String userId,
+    required File image,
+  });
 
   // SharedPreference___________________________________
   Future<UserEntity?> getCachedUser();

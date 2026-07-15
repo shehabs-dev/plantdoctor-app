@@ -1,30 +1,52 @@
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
-/// Universal app sizes — reusable across any Flutter application.
+/// Universal app sizes — raw constants and ScreenUtil-scaled getters.
 ///
-/// Two tiers:
-/// ─────────────────────────────────────────────────────────────
-/// RAW (const)   → used in ThemeData only — no ScreenUtil dependency
-/// SCALED        → used in widgets only — requires ScreenUtil to be ready
+/// TWO TIERS — use the right one:
+/// ─────────────────────────────────────────────────────────────────
+/// RAW (const double)   → ThemeData, StyleSheet, any place evaluated
+///                        before ScreenUtil initialises.
 ///
-/// Rules for scaled getters:
-/// - .r  → uniform scale (radius, icons, avatars, square containers)
-/// - .w  → horizontal scale (widths, horizontal padding)
-/// - .h  → vertical scale (heights, vertical padding, spacing)
-/// - .sp → font scale only (text — respects OS accessibility settings)
+/// SCALED (get → .r/w/h/sp) → inside Widget build() methods only,
+///                             after [ScreenUtilInit] has run.
 ///
-/// ⚠️  Icons use .r NOT .sp — icons don't follow text scale.
-/// ⚠️  Never use scaled getters in ThemeData or global variables.
-///     Only use them inside build() methods after ScreenUtilInit.
+/// Scale rules:
+///   .r  → uniform (radius, icons, avatars, square containers)
+///   .w  → horizontal (widths, horizontal padding)
+///   .h  → vertical (heights, vertical padding, spacing)
+///   .sp → font scale (respects OS accessibility)
+///
+/// ⚠️  Icons use .r — icons must NOT follow text scale.
+/// ⚠️  Never use scaled getters in ThemeData or top-level variables.
+abstract final class AppSizes {
+  // ══════════════════════════════════════════════════════════════════
+  // RAW CONSTANTS
+  // ══════════════════════════════════════════════════════════════════
 
-class AppSizes {
-  AppSizes._();
+  // ── Spacing scale ─────────────────────────────────────────────
+  // xs=4  sm=8  md=16  lg=24  xl=32
+  // (These are the "semantic" names used everywhere in UI)
+  static const double xs = 4;
+  static const double sm = 8;
+  static const double md = 16;
+  static const double lg = 24;
+  static const double xl = 32;
+  static const double xxl = 48;
+  static const double x3l = 64;
 
-  // ════════════════════════════════════════════════════════════════
-  // RAW CONSTANTS — used in ThemeData only, no ScreenUtil
-  // ════════════════════════════════════════════════════════════════
+  // ── Aliases for intermediate values ───────────────────────────
+  // Keeps existing code working without a big rename wave.
+  // Prefer the semantic names above in new code.
+  static const double spaceXxs = 4;
+  static const double spaceXs = 8;
+  static const double spaceSm = 12;
+  static const double spaceMd = 16;
+  static const double spaceLg = 24;
+  static const double spaceXl = 32;
+  static const double spaceXxl = 48;
+  static const double space3xl = 64;
 
-  // ── BORDER RADIUS ─────────────────────────────
+  // ── Border radius ─────────────────────────────────────────────
   static const double radiusXs = 4;
   static const double radiusSm = 8;
   static const double radiusMd = 12;
@@ -33,13 +55,13 @@ class AppSizes {
   static const double radiusXxl = 32;
   static const double radiusFull = 100;
 
-  // ── BORDER WIDTH ──────────────────────────────
+  // ── Border width ──────────────────────────────────────────────
   static const double borderWidthSm = 0.5;
-  static const double borderWidth = 1;
+  static const double borderWidth = 1.0;
   static const double borderWidthMd = 1.5;
-  static const double borderWidthLg = 2;
+  static const double borderWidthLg = 2.0;
 
-  // ── FONT SIZES ────────────────────────────────
+  // ── Font sizes ────────────────────────────────────────────────
   static const double fontXxs = 9;
   static const double fontXs = 10;
   static const double fontSm = 11;
@@ -50,7 +72,12 @@ class AppSizes {
   static const double font3xl = 24;
   static const double font4xl = 28;
 
-  // ── ICON SIZES ────────────────────────────────
+  // ── Line heights ──────────────────────────────────────────────
+  static const double lineHeightSm = 1.4;
+  static const double lineHeightMd = 1.6;
+  static const double lineHeightLg = 1.8;
+
+  // ── Icon sizes ────────────────────────────────────────────────
   static const double iconXs = 12;
   static const double iconSm = 16;
   static const double iconMd = 20;
@@ -58,46 +85,36 @@ class AppSizes {
   static const double iconXl = 32;
   static const double iconXxl = 40;
 
-  // ── ICON BUTTON ───────────────────────────────
-  static const double iconBtnSizeSm = 32;
-  static const double iconBtnSizeMd = 40;
-  static const double iconBtnSizeLg = 48;
+  // ── Icon button sizes ─────────────────────────────────────────
+  static const double iconBtnSm = 32;
+  static const double iconBtnMd = 40;
+  static const double iconBtnLg = 48;
 
-  // ── BUTTON ────────────────────────────────────
+  // ── Button heights ────────────────────────────────────────────
   static const double buttonHeightSm = 36;
   static const double buttonHeightMd = 44;
   static const double buttonHeightLg = 52;
 
-  // ── INPUT FIELD ───────────────────────────────
+  // ── Input field ───────────────────────────────────────────────
   static const double inputHeightSm = 44;
   static const double inputHeightMd = 52;
   static const double inputHeightLg = 60;
   static const double inputPaddingH = 16;
   static const double inputPaddingV = 14;
 
-  // ── SPACING ───────────────────────────────────
-  static const double spaceXxs = 4;
-  static const double spaceXs = 8;
-  static const double spaceSm = 12;
-  static const double spaceMd = 16;
-  static const double spaceLg = 24;
-  static const double spaceXl = 32;
-  static const double spaceXxl = 48;
-  static const double space3xl = 64;
-
-  // ── SCREEN PADDING ────────────────────────────
+  // ── Screen padding ────────────────────────────────────────────
   static const double screenPaddingH = 24;
   static const double screenPaddingV = 20;
   static const double screenPaddingHSm = 16;
 
-  // ── APP BAR ───────────────────────────────────
+  // ── App bar ───────────────────────────────────────────────────
   static const double appBarHeightSm = 52;
   static const double appBarHeightMd = 56;
   static const double appBarHeightLg = 64;
   static const double appBarIconSize = 24;
   static const double appBarIconBtnSize = 40;
 
-  // ── AVATAR ────────────────────────────────────
+  // ── Avatar ────────────────────────────────────────────────────
   static const double avatarXs = 24;
   static const double avatarSm = 32;
   static const double avatarMd = 44;
@@ -105,12 +122,12 @@ class AppSizes {
   static const double avatarXl = 72;
   static const double avatarXxl = 96;
 
-  // ── BADGE ─────────────────────────────────────
-  static const double badgeSizeSm = 6;
-  static const double badgeSizeMd = 8;
-  static const double badgeSizeLg = 18;
+  // ── Badge ─────────────────────────────────────────────────────
+  static const double badgeSm = 6;
+  static const double badgeMd = 8;
+  static const double badgeLg = 18;
 
-  // ── CHIP / TAG ────────────────────────────────
+  // ── Chip ──────────────────────────────────────────────────────
   static const double chipHeightSm = 24;
   static const double chipHeightMd = 32;
   static const double chipPaddingH = 10;
@@ -119,58 +136,56 @@ class AppSizes {
   static const double chipRadiusMd = 12;
   static const double chipRadiusFull = 100;
 
-  // ── DIVIDER ───────────────────────────────────
+  // ── Divider ───────────────────────────────────────────────────
   static const double dividerThickness = 1;
   static const double dividerThicknessMd = 1.5;
   static const double dividerIndent = 16;
 
-  // ── DRAWER ────────────────────────────────────
+  // ── Drawer ────────────────────────────────────────────────────
   static const double drawerWidthSm = 240;
   static const double drawerWidthMd = 280;
   static const double drawerWidthLg = 320;
 
-  // ── BOTTOM SHEET ──────────────────────────────
+  // ── Bottom sheet ──────────────────────────────────────────────
   static const double bottomSheetRadiusSm = 16;
   static const double bottomSheetRadiusMd = 24;
   static const double bottomSheetHandleWidth = 40;
   static const double bottomSheetHandleHeight = 4;
 
-  // ── BOTTOM NAV ────────────────────────────────
+  // ── Bottom nav ────────────────────────────────────────────────
   static const double bottomNavHeightSm = 60;
   static const double bottomNavHeightMd = 72;
   static const double bottomNavIconSize = 24;
 
-  // ── LIST ITEM ─────────────────────────────────
+  // ── List ──────────────────────────────────────────────────────
   static const double listItemHeightSm = 48;
   static const double listItemHeightMd = 64;
   static const double listItemHeightLg = 80;
-
-  // ── LIST TILE ─────────────────────────────────
   static const double listTilePaddingH = 24;
   static const double listTilePaddingV = 4;
 
-  // ── IMAGE / THUMBNAIL ─────────────────────────
+  // ── Thumbnail ─────────────────────────────────────────────────
   static const double thumbSm = 40;
   static const double thumbMd = 56;
   static const double thumbLg = 80;
   static const double thumbXl = 120;
 
-  // ── FLOATING ACTION BUTTON ────────────────────
+  // ── FAB ───────────────────────────────────────────────────────
   static const double fabSizeSm = 40;
   static const double fabSizeMd = 52;
   static const double fabSizeLg = 64;
   static const double fabIconSize = 24;
 
-  // ── DIALOG ────────────────────────────────────
+  // ── Dialog ────────────────────────────────────────────────────
   static const double dialogPaddingH = 24;
   static const double dialogPaddingV = 20;
 
-  // ── SNACKBAR ──────────────────────────────────
+  // ── Snackbar ──────────────────────────────────────────────────
   static const double snackbarHeightSm = 48;
   static const double snackbarHeightMd = 56;
   static const double snackbarPaddingH = 16;
 
-  // ── PROGRESS INDICATOR ────────────────────────
+  // ── Progress indicator ────────────────────────────────────────
   static const double progressHeightSm = 2;
   static const double progressHeightMd = 4;
   static const double progressHeightLg = 6;
@@ -178,48 +193,37 @@ class AppSizes {
   static const double progressCircleMd = 24;
   static const double progressCircleLg = 40;
 
-  // ── SKELETON / SHIMMER ────────────────────────
+  // ── Skeleton / shimmer ────────────────────────────────────────
   static const double skeletonHeightSm = 12;
   static const double skeletonHeightMd = 16;
   static const double skeletonHeightLg = 20;
   static const double skeletonRadius = 6;
 
-  // ── CHECKBOX / RADIO ──────────────────────────
+  // ── Form controls ─────────────────────────────────────────────
   static const double checkboxSize = 20;
   static const double radioSize = 20;
 
-  // ── LINE HEIGHT — never device-dependent ──────
-  static const double lineHeightSm = 1.4;
-  static const double lineHeightMd = 1.6;
-  static const double lineHeightLg = 1.8;
-
-  // ── OPACITY — never device-dependent ──────────
+  // ── Opacity ───────────────────────────────────────────────────
   static const double opacityDisabled = 0.38;
   static const double opacityHint = 0.5;
   static const double opacityOverlay = 0.6;
   static const double opacitySubtle = 0.08;
 
-  // ════════════════════════════════════════════════════════════════
+  // ══════════════════════════════════════════════════════════════════
   // SCALED GETTERS — use ONLY inside build() after ScreenUtilInit
-  // Single source of truth: scaled links back to raw constant above
-  // ════════════════════════════════════════════════════════════════
+  // Single source of truth: each getter links back to its raw const.
+  // ══════════════════════════════════════════════════════════════════
 
-  // ── BORDER RADIUS — .r ────────────────────────
-  static double get radiusXsScaled => radiusXs.r;
-  static double get radiusSmScaled => radiusSm.r;
-  static double get radiusMdScaled => radiusMd.r;
-  static double get radiusLgScaled => radiusLg.r;
-  static double get radiusXlScaled => radiusXl.r;
-  static double get radiusXxlScaled => radiusXxl.r;
-  static double get radiusFullScaled => radiusFull.r;
+  // ── Spacing scale ─────────────────────────────────────────────
+  static double get xsScaled => xs.h;
+  static double get smScaled => sm.h;
+  static double get mdScaled => md.h;
+  static double get lgScaled => lg.h;
+  static double get xlScaled => xl.h;
+  static double get xxlScaled => xxl.h;
+  static double get x3lScaled => x3l.h;
 
-  // ── BORDER WIDTH — .r ─────────────────────────
-  static double get borderWidthSmScaled => borderWidthSm.r;
-  static double get borderWidthScaled => borderWidth.r;
-  static double get borderWidthMdScaled => borderWidthMd.r;
-  static double get borderWidthLgScaled => borderWidthLg.r;
-
-  // ── SPACING — .h ──────────────────────────────
+  // ── Intermediate spacing (backward compat) ────────────────────
   static double get spaceXxsScaled => spaceXxs.h;
   static double get spaceXsScaled => spaceXs.h;
   static double get spaceSmScaled => spaceSm.h;
@@ -229,12 +233,22 @@ class AppSizes {
   static double get spaceXxlScaled => spaceXxl.h;
   static double get space3xlScaled => space3xl.h;
 
-  // ── SCREEN PADDING ────────────────────────────
-  static double get screenPaddingHScaled => screenPaddingH.w;
-  static double get screenPaddingVScaled => screenPaddingV.h;
-  static double get screenPaddingHSmScaled => screenPaddingHSm.w;
+  // ── Border radius ─────────────────────────────────────────────
+  static double get radiusXsScaled => radiusXs.r;
+  static double get radiusSmScaled => radiusSm.r;
+  static double get radiusMdScaled => radiusMd.r;
+  static double get radiusLgScaled => radiusLg.r;
+  static double get radiusXlScaled => radiusXl.r;
+  static double get radiusXxlScaled => radiusXxl.r;
+  static double get radiusFullScaled => radiusFull.r;
 
-  // ── FONT SIZES — .sp ──────────────────────────
+  // ── Border width ──────────────────────────────────────────────
+  static double get borderWidthSmScaled => borderWidthSm.r;
+  static double get borderWidthScaled => borderWidth.r;
+  static double get borderWidthMdScaled => borderWidthMd.r;
+  static double get borderWidthLgScaled => borderWidthLg.r;
+
+  // ── Font sizes ────────────────────────────────────────────────
   static double get fontXxsScaled => fontXxs.sp;
   static double get fontXsScaled => fontXs.sp;
   static double get fontSmScaled => fontSm.sp;
@@ -245,7 +259,7 @@ class AppSizes {
   static double get font3xlScaled => font3xl.sp;
   static double get font4xlScaled => font4xl.sp;
 
-  // ── ICON SIZES — .r NOT .sp ───────────────────
+  // ── Icon sizes ────────────────────────────────────────────────
   static double get iconXsScaled => iconXs.r;
   static double get iconSmScaled => iconSm.r;
   static double get iconMdScaled => iconMd.r;
@@ -253,39 +267,36 @@ class AppSizes {
   static double get iconXlScaled => iconXl.r;
   static double get iconXxlScaled => iconXxl.r;
 
-  // ── ICON BUTTON — .r ──────────────────────────
-  static double get iconBtnSizeSmScaled => iconBtnSizeSm.r;
-  static double get iconBtnSizeMdScaled => iconBtnSizeMd.r;
-  static double get iconBtnSizeLgScaled => iconBtnSizeLg.r;
+  // ── Icon button ───────────────────────────────────────────────
+  static double get iconBtnSmScaled => iconBtnSm.r;
+  static double get iconBtnMdScaled => iconBtnMd.r;
+  static double get iconBtnLgScaled => iconBtnLg.r;
 
-  // ── BUTTON — .h ───────────────────────────────
+  // ── Button ────────────────────────────────────────────────────
   static double get buttonHeightSmScaled => buttonHeightSm.h;
   static double get buttonHeightMdScaled => buttonHeightMd.h;
   static double get buttonHeightLgScaled => buttonHeightLg.h;
 
-  // ── INPUT FIELD ───────────────────────────────
+  // ── Input ─────────────────────────────────────────────────────
   static double get inputHeightSmScaled => inputHeightSm.h;
   static double get inputHeightMdScaled => inputHeightMd.h;
   static double get inputHeightLgScaled => inputHeightLg.h;
   static double get inputPaddingHScaled => inputPaddingH.w;
   static double get inputPaddingVScaled => inputPaddingV.h;
 
-  // ── CARD PADDING ──────────────────────────────
-  static double get cardPaddingHSmScaled => 12.w;
-  static double get cardPaddingHMdScaled => 16.w;
-  static double get cardPaddingHLgScaled => 20.w;
-  static double get cardPaddingVSmScaled => 10.h;
-  static double get cardPaddingVMdScaled => 14.h;
-  static double get cardPaddingVLgScaled => 18.h;
+  // ── Screen padding ────────────────────────────────────────────
+  static double get screenPaddingHScaled => screenPaddingH.w;
+  static double get screenPaddingVScaled => screenPaddingV.h;
+  static double get screenPaddingHSmScaled => screenPaddingHSm.w;
 
-  // ── APP BAR ───────────────────────────────────
+  // ── App bar ───────────────────────────────────────────────────
   static double get appBarHeightSmScaled => appBarHeightSm.h;
   static double get appBarHeightMdScaled => appBarHeightMd.h;
   static double get appBarHeightLgScaled => appBarHeightLg.h;
   static double get appBarIconSizeScaled => appBarIconSize.r;
   static double get appBarIconBtnSizeScaled => appBarIconBtnSize.r;
 
-  // ── AVATAR — .r ───────────────────────────────
+  // ── Avatar ────────────────────────────────────────────────────
   static double get avatarXsScaled => avatarXs.r;
   static double get avatarSmScaled => avatarSm.r;
   static double get avatarMdScaled => avatarMd.r;
@@ -293,12 +304,7 @@ class AppSizes {
   static double get avatarXlScaled => avatarXl.r;
   static double get avatarXxlScaled => avatarXxl.r;
 
-  // ── BADGE — .r ────────────────────────────────
-  static double get badgeSizeSmScaled => badgeSizeSm.r;
-  static double get badgeSizeMdScaled => badgeSizeMd.r;
-  static double get badgeSizeLgScaled => badgeSizeLg.r;
-
-  // ── CHIP ──────────────────────────────────────
+  // ── Chip ──────────────────────────────────────────────────────
   static double get chipHeightSmScaled => chipHeightSm.h;
   static double get chipHeightMdScaled => chipHeightMd.h;
   static double get chipPaddingHScaled => chipPaddingH.w;
@@ -307,57 +313,31 @@ class AppSizes {
   static double get chipRadiusMdScaled => chipRadiusMd.r;
   static double get chipRadiusFullScaled => chipRadiusFull.r;
 
-  // ── DIVIDER ───────────────────────────────────
-  static double get dividerThicknessScaled => dividerThickness.h;
-  static double get dividerThicknessMdScaled => dividerThicknessMd.h;
-  static double get dividerIndentScaled => dividerIndent.w;
-
-  // ── DRAWER ────────────────────────────────────
+  // ── Drawer ────────────────────────────────────────────────────
   static double get drawerWidthSmScaled => drawerWidthSm.w;
   static double get drawerWidthMdScaled => drawerWidthMd.w;
   static double get drawerWidthLgScaled => drawerWidthLg.w;
 
-  // ── BOTTOM SHEET ──────────────────────────────
-  static double get bottomSheetRadiusSmScaled => bottomSheetRadiusSm.r;
-  static double get bottomSheetRadiusMdScaled => bottomSheetRadiusMd.r;
-  static double get bottomSheetHandleWidthScaled => bottomSheetHandleWidth.w;
-  static double get bottomSheetHandleHeightScaled => bottomSheetHandleHeight.h;
-
-  // ── BOTTOM NAV ────────────────────────────────
-  static double get bottomNavHeightSmScaled => bottomNavHeightSm.h;
-  static double get bottomNavHeightMdScaled => bottomNavHeightMd.h;
-  static double get bottomNavIconSizeScaled => bottomNavIconSize.r;
-
-  // ── LIST ITEM ─────────────────────────────────
-  static double get listItemHeightSmScaled => listItemHeightSm.h;
-  static double get listItemHeightMdScaled => listItemHeightMd.h;
-  static double get listItemHeightLgScaled => listItemHeightLg.h;
-
-  // ── IMAGE / THUMBNAIL — .r ────────────────────
-  static double get thumbSmScaled => thumbSm.r;
-  static double get thumbMdScaled => thumbMd.r;
-  static double get thumbLgScaled => thumbLg.r;
-  static double get thumbXlScaled => thumbXl.r;
-
-  // ── FAB — .r ──────────────────────────────────
-  static double get fabSizeSmScaled => fabSizeSm.r;
-  static double get fabSizeMdScaled => fabSizeMd.r;
-  static double get fabSizeLgScaled => fabSizeLg.r;
-  static double get fabIconSizeScaled => fabIconSize.r;
-
-  // ── DIALOG ────────────────────────────────────
+  // ── Dialog ────────────────────────────────────────────────────
   static double get dialogWidthSmScaled => 0.75.sw;
   static double get dialogWidthMdScaled => 0.85.sw;
   static double get dialogWidthLgScaled => 0.95.sw;
   static double get dialogPaddingHScaled => dialogPaddingH.w;
   static double get dialogPaddingVScaled => dialogPaddingV.h;
 
-  // ── SNACKBAR ──────────────────────────────────
-  static double get snackbarHeightSmScaled => snackbarHeightSm.h;
-  static double get snackbarHeightMdScaled => snackbarHeightMd.h;
-  static double get snackbarPaddingHScaled => snackbarPaddingH.w;
+  // ── Thumbnail ─────────────────────────────────────────────────
+  static double get thumbSmScaled => thumbSm.r;
+  static double get thumbMdScaled => thumbMd.r;
+  static double get thumbLgScaled => thumbLg.r;
+  static double get thumbXlScaled => thumbXl.r;
 
-  // ── PROGRESS INDICATOR ────────────────────────
+  // ── FAB ───────────────────────────────────────────────────────
+  static double get fabSizeSmScaled => fabSizeSm.r;
+  static double get fabSizeMdScaled => fabSizeMd.r;
+  static double get fabSizeLgScaled => fabSizeLg.r;
+  static double get fabIconSizeScaled => fabIconSize.r;
+
+  // ── Progress indicator ────────────────────────────────────────
   static double get progressHeightSmScaled => progressHeightSm.h;
   static double get progressHeightMdScaled => progressHeightMd.h;
   static double get progressHeightLgScaled => progressHeightLg.h;
@@ -365,13 +345,9 @@ class AppSizes {
   static double get progressCircleMdScaled => progressCircleMd.r;
   static double get progressCircleLgScaled => progressCircleLg.r;
 
-  // ── SKELETON / SHIMMER ────────────────────────
+  // ── Skeleton ──────────────────────────────────────────────────
   static double get skeletonHeightSmScaled => skeletonHeightSm.h;
   static double get skeletonHeightMdScaled => skeletonHeightMd.h;
   static double get skeletonHeightLgScaled => skeletonHeightLg.h;
   static double get skeletonRadiusScaled => skeletonRadius.r;
-
-  // ── CHECKBOX / RADIO — .r ─────────────────────
-  static double get checkboxSizeScaled => checkboxSize.r;
-  static double get radioSizeScaled => radioSize.r;
 }

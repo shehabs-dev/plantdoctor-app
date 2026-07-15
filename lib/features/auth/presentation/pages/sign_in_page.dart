@@ -4,7 +4,7 @@ import 'package:go_router/go_router.dart';
 import '../../../../config/localization/generated/l10n.dart';
 import '../../../../config/routes/route_names.dart';
 import '../../../../core/assets/app_assets.dart';
-import '../../../../core/helpers/auth_message_key_x.dart';
+import '../../../../core/helpers/error_message_key_x.dart';
 import '../../../../core/theme/app_sizes.dart';
 import '../../../../core/widgets/app_text_form_field.dart';
 import '../../../../core/widgets/loading_widget.dart';

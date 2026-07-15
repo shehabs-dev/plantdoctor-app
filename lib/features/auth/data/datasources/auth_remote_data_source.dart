@@ -22,7 +22,10 @@ abstract class AuthRemoteDataSource {
 
   Future<String> isEmailVerified();
 
-  Future<User> signInWithProvider({required AppAuthProvider provider});
+  Future<User> signInWithProvider({
+    required AppAuthProvider provider,
+    void Function()? onAccountSelected,
+  });
 
   Future<void> resetPassword({required String email});
 }
@@ -95,10 +98,15 @@ class FirebaseAuthRemoteDataSource implements AuthRemoteDataSource {
   }
 
   @override
-  Future<User> signInWithProvider({required AppAuthProvider provider}) async {
+  Future<User> signInWithProvider({
+    required AppAuthProvider provider,
+    void Function()? onAccountSelected,
+  }) async {
     try {
       return switch (provider) {
-        AppAuthProvider.google => await _signInWithGoogle(),
+        AppAuthProvider.google => await _signInWithGoogle(
+          onAccountSelected: onAccountSelected,
+        ),
       };
     } on AuthException {
       rethrow;
@@ -154,9 +162,11 @@ class FirebaseAuthRemoteDataSource implements AuthRemoteDataSource {
     }
   }
 
-  Future<User> _signInWithGoogle() async {
-    final credential = await _googleSignInProvider.getCredential();
-    final userCredential = await _firebaseAuth.signInWithCredential(credential);
-    return userCredential.user!;
+  Future<User> _signInWithGoogle({void Function()? onAccountSelected}) async {
+    final credential = await _googleSignInProvider.getCredential(
+      onAccountSelected: onAccountSelected,
+    );
+    final result = await _firebaseAuth.signInWithCredential(credential);
+    return result.user!;
   }
 }

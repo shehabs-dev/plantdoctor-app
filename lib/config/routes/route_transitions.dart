@@ -73,7 +73,7 @@ class RouteTransitions {
     );
   }
 
-  /// ✅ BEST for SignIn → Home: fade + scale gives a sense of "arriving"
+  ///  BEST for SignIn → Home: fade + scale gives a sense of "arriving"
   static CustomTransitionPage fadeScale(Widget child, GoRouterState state) {
     return CustomTransitionPage(
       key: state.pageKey,

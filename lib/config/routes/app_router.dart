@@ -1,19 +1,23 @@
+import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
-import 'package:plantdoctor/config/routes/routes_path.dart';
 
 import '../../features/auth/presentation/cubit/auth/auth_cubit.dart';
 import 'go_router_refresh_stream.dart';
 import 'auth_routes.dart';
 import 'main_routes.dart';
 import '../di/injection_container.dart' as di;
+import 'routes_path.dart';
 
 class AppRouter {
   AppRouter._();
 
   static final router = GoRouter(
     debugLogDiagnostics: true,
-    refreshListenable: GoRouterRefreshStream(di.sl<AuthCubit>()),
+    refreshListenable: Listenable.merge([
+      GoRouterRefreshStream(di.sl<AuthCubit>()),
+    ]),
+
     initialLocation: RoutesPath.splash,
 
     redirect: (context, state) {
@@ -34,7 +38,8 @@ class AppRouter {
       if (isInitial) return isSplash ? null : RoutesPath.splash;
 
       // these actions determine navigation — show splash
-      if (authState.isLoading(AuthAction.signOut)) {
+      if (authState.isLoading(AuthAction.signOut) ||
+          authState.isLoading(AuthAction.googleSignIn)) {
         return isSplash ? null : RoutesPath.splash;
       }
 
@@ -44,11 +49,10 @@ class AppRouter {
           authState.isLoading(AuthAction.signUp) ||
           authState.isLoading(AuthAction.sendVerification) ||
           authState.isLoading(AuthAction.checkVerification) ||
-          authState.isLoading(AuthAction.googleSignIn) ||
-          authState.isLoading(AuthAction.resetPassword)) {
+          authState.isLoading(AuthAction.resetPassword) ||
+          authState.isLoading(AuthAction.updatePicture)) {
         return null;
       }
-
       if (!isAuthenticated && !isUnverified) {
         return isAuthRoute ? null : RoutesPath.signIn;
       }

@@ -3,7 +3,7 @@ import 'package:email_validator/email_validator.dart';
 import '../../config/localization/generated/l10n.dart';
 
 /// Defines supported field types
-enum FieldType { name, password, phone, email }
+enum FieldType { name, password, phone, email, description }
 
 /// A clean, reusable text form field with built-in validation.
 /// Designed for both login and sign-up forms.
@@ -32,6 +32,11 @@ class AppTextFormField extends StatefulWidget {
   /// Only used when fieldType is phone.
   final String? dialCode;
 
+  /// Min/max lines — useful for multiline fields like description.
+  /// Defaults to 1 for single-line fields.
+  final int? minLines;
+  final int? maxLines;
+
   final TextInputType? keyboardType;
   final TextInputAction? textInputAction;
   final FocusNode? focusNode;
@@ -50,6 +55,8 @@ class AppTextFormField extends StatefulWidget {
     this.matchController,
     this.validator,
     this.dialCode,
+    this.minLines,
+    this.maxLines,
     this.keyboardType,
     this.textInputAction,
     this.focusNode,
@@ -90,6 +97,8 @@ class _AppTextFormFieldState extends State<AppTextFormField> {
           return s.phoneRequired;
         case FieldType.email:
           return s.emailRequired;
+        case FieldType.description:
+          return s.descriptionRequired;
       }
     }
 
@@ -139,6 +148,10 @@ class _AppTextFormFieldState extends State<AppTextFormField> {
           return s.validEmailAddress;
         }
         break;
+
+      case FieldType.description:
+        if (text.length < 10) return s.descriptionMinLength;
+        break;
     }
 
     return widget.validator?.call(value);
@@ -151,6 +164,8 @@ class _AppTextFormFieldState extends State<AppTextFormField> {
         return TextInputType.emailAddress;
       case FieldType.phone:
         return TextInputType.phone;
+      case FieldType.description:
+        return TextInputType.multiline;
       case FieldType.name:
       case FieldType.password:
         return TextInputType.text;
@@ -169,6 +184,8 @@ class _AppTextFormFieldState extends State<AppTextFormField> {
         return const [AutofillHints.username];
       case FieldType.phone:
         return const [AutofillHints.telephoneNumber];
+      case FieldType.description:
+        return const [];
     }
   }
 
@@ -177,6 +194,13 @@ class _AppTextFormFieldState extends State<AppTextFormField> {
     final isPassword = widget.fieldType == FieldType.password;
     final isEmail = widget.fieldType == FieldType.email;
     final isPhone = widget.fieldType == FieldType.phone;
+    final isDescription = widget.fieldType == FieldType.description;
+
+    // description defaults to min 3 / max 6 lines if caller doesn't override
+    final minLines = widget.minLines ?? (isDescription ? 3 : 1);
+    final maxLines = isPassword
+        ? 1
+        : widget.maxLines ?? (isDescription ? 6 : 1);
 
     return TextFormField(
       controller: widget.controller,
@@ -193,6 +217,8 @@ class _AppTextFormFieldState extends State<AppTextFormField> {
       validator: _validate,
       autocorrect: !(isPassword || isEmail),
       enableSuggestions: !isPassword,
+      minLines: minLines,
+      maxLines: maxLines,
       decoration: InputDecoration(
         labelText: widget.label,
         // dial code prefix shown only for phone fields when dialCode is provided
@@ -209,6 +235,8 @@ class _AppTextFormFieldState extends State<AppTextFormField> {
                 },
               )
             : null,
+        // align label to top for multiline fields so it doesn't float mid-field
+        alignLabelWithHint: isDescription || (widget.maxLines ?? 1) > 1,
       ),
     );
   }

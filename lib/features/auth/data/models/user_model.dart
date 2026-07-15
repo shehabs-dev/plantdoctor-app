@@ -2,6 +2,7 @@ import 'dart:convert';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart' as fb;
 import '../../domain/entities/user_entity.dart';
+import '../../domain/entities/user_role.dart';
 
 class UserModel extends UserEntity {
   const UserModel({
@@ -11,6 +12,7 @@ class UserModel extends UserEntity {
     required super.isEmailVerified,
     super.picture,
     super.createdAt,
+    super.role = UserRole.user,
   });
 
   /// Firestore: set() / update()
@@ -21,6 +23,7 @@ class UserModel extends UserEntity {
       'email': email,
       'isEmailVerified': isEmailVerified,
       'picture': picture,
+      'role': role.name,
       'createdAt': createdAt == null
           ? FieldValue.serverTimestamp()
           : Timestamp.fromDate(createdAt!),
@@ -35,6 +38,10 @@ class UserModel extends UserEntity {
       isEmailVerified: map['isEmailVerified'] ?? false,
       picture: map['picture'],
       createdAt: (map['createdAt'] as Timestamp?)?.toDate(),
+      role: UserRole.values.firstWhere(
+        (e) => e.name == map['role'],
+        orElse: () => UserRole.user,
+      ),
     );
   }
 
@@ -46,6 +53,7 @@ class UserModel extends UserEntity {
     isEmailVerified: user.emailVerified,
     picture: user.photoURL,
     createdAt: DateTime.now(),
+    role: UserRole.user,
   );
 
   UserModel copyWith({
@@ -55,6 +63,7 @@ class UserModel extends UserEntity {
     bool? isEmailVerified,
     String? picture,
     DateTime? createdAt,
+    UserRole? role,
   }) => UserModel(
     id: id ?? this.id,
     name: name ?? this.name,
@@ -62,6 +71,7 @@ class UserModel extends UserEntity {
     isEmailVerified: isEmailVerified ?? this.isEmailVerified,
     picture: picture ?? this.picture,
     createdAt: createdAt ?? this.createdAt,
+    role: role ?? this.role,
   );
 
   /// Local storage: SharedPreferences / Hive
@@ -74,6 +84,7 @@ class UserModel extends UserEntity {
       'email': email,
       'isEmailVerified': isEmailVerified,
       'picture': picture,
+      'role': role.name,
       'createdAt': createdAt?.toIso8601String(),
     };
   }
@@ -85,6 +96,10 @@ class UserModel extends UserEntity {
       email: map['email'] ?? '',
       isEmailVerified: map['isEmailVerified'] ?? false,
       picture: map['picture'],
+      role: UserRole.values.firstWhere(
+        (e) => e.name == map['role'],
+        orElse: () => UserRole.user,
+      ),
       createdAt: map['createdAt'] != null
           ? DateTime.parse(map['createdAt'])
           : null,
