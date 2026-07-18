@@ -1,6 +1,6 @@
 # PlantDoctor
 
-A mobile application built with BLoC, Clean Architecture, Hive for local persistence, and TensorFlow Lite for local plant disease classification.
+A mobile application built with BLoC, Clean Architecture, Hive for local persistence, TensorFlow Lite for local plant disease classification, and Cloudinary for remote media management.
 
 > **Engineering Note:** This application was developed as a graduation project to demonstrate a production-ready mobile engineering workflow, showcasing clean architecture boundaries, on-device machine learning, offline-first sync state machines, and key-wrapped local storage encryption.
 
@@ -10,6 +10,7 @@ A mobile application built with BLoC, Clean Architecture, Hive for local persist
   <img src="https://img.shields.io/badge/Flutter-3.x-02569B?style=for-the-badge&logo=flutter" alt="Flutter" />
   <img src="https://img.shields.io/badge/Dart-3.x-0175C2?style=for-the-badge&logo=dart" alt="Dart" />
   <img src="https://img.shields.io/badge/Firebase-Auth%20%2B%20Firestore-FFCA28?style=for-the-badge&logo=firebase" alt="Firebase" />
+  <img src="https://img.shields.io/badge/Cloudinary-Media%20Storage-blue?style=for-the-badge&logo=cloudinary" alt="Cloudinary" />
   <img src="https://img.shields.io/badge/TensorFlow%20Lite-On--Device-FF6F00?style=for-the-badge&logo=tensorflow" alt="TensorFlow Lite" />
   <img src="https://img.shields.io/badge/Hive-AES--256%20Encrypted-red?style=for-the-badge" alt="Hive Encrypted" />
   <img src="https://img.shields.io/badge/License-PolyForm%20Strict-blue?style=for-the-badge" alt="PolyForm Strict License" />
@@ -21,7 +22,10 @@ A mobile application built with BLoC, Clean Architecture, Hive for local persist
 - **On-Device Inference Isolates:** Real-time leaf disease classification via a custom TFLite interpreter running on background Dart isolates, supporting GPU delegate acceleration and FP16/INT8 quantized model fallback.
 - **Out-of-Distribution (OOD) Filtering:** Employs a confidence threshold of `0.65` to handle unknown plant states, automatically fallback-tagging classification outliers as "Unknown Disease".
 - **AES-Encrypted Offline Cache:** Local chats, messages, and reports are persisted securely via Hive, using AES-256 keys dynamically generated and stored in the Android KeyStore/iOS Keychain via `flutter_secure_storage`.
-- **Auto-Sync Connectivity State Machine:** Actively monitors network interface changes and actual host reachability, queuing offline messages/reports and triggering automatic background synchronization upon restoration.
+- **Intelligent Connectivity Probing:** Combines `connectivity_plus` interface listeners with an end-to-end backend reachability machine. Employs a 4-second cache TTL to avoid redundant pings, validating active status against the FastAPI RAG `/health` endpoint and falling back to direct server-only Firestore queries.
+- **Offline-First Transaction Queue:** Safely caches and queues pending chat messages, agricultural reports, and image assets when offline, triggering automatic sequential background synchronization when actual host reachability transitions to online.
+- **Cloudinary Media Upload Manager:** Offline diagnostic image uploads and crop reports are managed via separate custom Cloudinary presets. Images are first uploaded and converted to HTTPS URLs, which are then passed to Firestore and the RAG model.
+- **Unified Topic-Based Notifications:** Wraps FCM and `flutter_local_notifications` into a single subscription service, routing via dynamic topics (`all_users`, locales, inactivity groups) and managing foreground notifications overlay and terminated-app launcher intents.
 - **Location-Aware Geocoding:** Automatically resolves geographical coordinates into specific administrative governorates offline and registers them dynamically inside agricultural reports.
 - **Over-the-Air Hot Patching:** Integrated with Shorebird for dynamic, hot-code updates without requiring full App Store or Google Play Store re-releases.
 
@@ -107,8 +111,8 @@ The project is structured according to Clean Architecture guidelines to ensure s
 - **Dependency Injection:** `get_it`
 - **Navigation:** `go_router`
 - **Local Persistence & Security:** `hive` / `hive_flutter` (AES-256 encrypted), `flutter_secure_storage`, `shared_preferences`
-- **Remote / Cloud Infrastructure:** Firebase Auth, Cloud Firestore (with offline cache settings), Firebase Messaging, Firebase In-App Messaging
-- **Networking & API:** `dio` (configured with automated JWT refresh interceptors)
+- **Remote / Cloud Infrastructure:** Firebase Auth, Cloud Firestore (with offline cache settings), Firebase Messaging, Firebase In-App Messaging, Cloudinary Media Services
+- **Networking & Connectivity:** `dio` (configured with automated JWT refresh interceptors), `connectivity_plus` (multi-interface network state detection), Cloudinary HTTP Upload API, and custom dual-channel server reachability probing
 - **Machine Learning:** `tflite_flutter` (running in dedicated isolates)
 - **Location Services:** `geolocator`, `geocoding` (for administrative governorate translation)
 - **Code Push:** `shorebird_code_push`
