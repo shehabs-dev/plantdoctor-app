@@ -42,4 +42,5 @@ jobs:
         with:
           tag_name: build-${{ github.run_number }}
           name: Build ${{ github.run_number }}
-          files:
+          files: build/app/outputs/flutter-apk/app-release.apk
+          fail_on_unmatched_files: true
