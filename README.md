@@ -201,7 +201,7 @@ This project is licensed under the terms of the **PolyForm Strict License 1.0.0*
 
 ---
 
-## Author
+## Author 
 
 Developed and maintained by **shehabs-dev**.
 - **Email:** shehab.saber.dev@gmail.com
